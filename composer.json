@@ -27,7 +27,10 @@
         "hyperf/memory": "~2.1.0",
         "hyperf/pool": "^2.1",
         "hyperf/process": "~2.1.0",
-        "hyperf/redis": "~2.1.0"
+        "hyperf/redis": "~2.1.0",
+        "hyperf/task": "^2.1",
+        "hyperf/view": "^2.1",
+        "hyperf/view-engine": "^2.1"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.14",
