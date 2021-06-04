@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0ff7badd2dac55499f56d3106ffc7217",
+    "content-hash": "5ad965224826b112ac944e2fc27fe070",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -2420,6 +2420,73 @@
                 "source": "https://github.com/hyperf/hyperf"
             },
             "time": "2021-05-14T04:44:23+00:00"
+        },
+        {
+            "name": "hyperf/session",
+            "version": "v2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hyperf/session.git",
+                "reference": "5381f4fab1469962e80ca775d5db694f509686f3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hyperf/session/zipball/5381f4fab1469962e80ca775d5db694f509686f3",
+                "reference": "5381f4fab1469962e80ca775d5db694f509686f3",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "hyperf/utils": "~2.1.0",
+                "php": ">=7.2",
+                "psr/http-server-middleware": "^1.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.9",
+                "malukenho/docheader": "^0.1.6",
+                "mockery/mockery": "^1.0",
+                "phpunit/phpunit": "^9.4"
+            },
+            "suggest": {
+                "hyperf/config": "Required to load session config.",
+                "psr/container": "Required to use SessionFactory."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev"
+                },
+                "hyperf": {
+                    "config": "Hyperf\\Session\\ConfigProvider"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Hyperf\\Session\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A session library",
+            "homepage": "https://hyperf.io",
+            "keywords": [
+                "php",
+                "session"
+            ],
+            "support": {
+                "docs": "https://hyperf.wiki",
+                "issues": "https://github.com/hyperf/hyperf/issues",
+                "pull-request": "https://github.com/hyperf/hyperf/pulls",
+                "source": "https://github.com/hyperf/hyperf"
+            },
+            "time": "2020-12-27T06:12:45+00:00"
         },
         {
             "name": "hyperf/task",

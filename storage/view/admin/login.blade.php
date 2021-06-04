@@ -64,7 +64,7 @@
             password = encryptObj.base64encode(password);
 
             axios.post(
-                "{{ url('/admin/login') }}",
+                "/auth/doLogin",
                 {
                     'name': name,
                     'password': password,
@@ -73,7 +73,7 @@
                 layer.msg('登录成功！', {
                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                     }, function () {
-                        window.location = "{{ url('/admin/') }}";
+                        window.location = "/admin";
                     }
                 );
             }).catch(function (error) {
