@@ -34,6 +34,7 @@
         "hyperf/view-engine": "^2.1"
     },
     "require-dev": {
+        "filp/whoops": "^2.12",
         "friendsofphp/php-cs-fixer": "^2.14",
         "hyperf/testing": "~2.1.0",
         "hyperf/watcher": "^2.1",

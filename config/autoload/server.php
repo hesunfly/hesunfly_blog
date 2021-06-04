@@ -29,7 +29,7 @@ return [
     ],
     'settings' => [
         Constant::OPTION_ENABLE_COROUTINE => true,
-        Constant::OPTION_WORKER_NUM => swoole_cpu_num(),
+        Constant::OPTION_WORKER_NUM => env('WORK_NUM', swoole_cpu_num()),
         Constant::OPTION_PID_FILE => BASE_PATH . '/runtime/hyperf.pid',
         Constant::OPTION_OPEN_TCP_NODELAY => true,
         Constant::OPTION_MAX_COROUTINE => 100000,
@@ -40,7 +40,7 @@ return [
         // 静态资源
         'document_root' => BASE_PATH . '/public',
         'enable_static_handler' => true,
-        // Task Worker 数量，根据您的服务器配置而配置适当的数量
+        // Task Worker 数量，根据您的服务器配置而配置适当的数量，一般是work的4倍
         'task_worker_num' => 4,
         // 因为 `Task` 主要处理无法协程化的方法，所以这里推荐设为 `false`，避免协程下出现数据混淆的情况
         'task_enable_coroutine' => false,
