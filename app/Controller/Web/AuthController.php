@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 namespace App\Controller\Web;
 
+use App\Request\AuthRequest;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\PostMapping;
@@ -36,9 +37,11 @@ class AuthController extends Controller
     /**
      * @PostMapping(path="doLogin")
      * function:
+     * @param AuthRequest $request
      */
-    public function doLogin()
+    public function doLogin(AuthRequest $request)
     {
+        $params = $request->all();
 
     }
 }
