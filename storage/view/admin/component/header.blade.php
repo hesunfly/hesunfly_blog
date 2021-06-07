@@ -1,7 +1,7 @@
 <header>
     <!-- logo -->
     <div class="am-fl tpl-header-logo">
-        <a href="{{ url('admin/') }}"><img src="{{ \App\Services\CacheService::getConfig('logo_img') }}" alt="" style="height: 55px;width: auto;"></a>
+        <a href="/admin/"><img src="" alt="" style="height: 55px;width: auto;"></a>
     </div>
     <!-- 右侧内容 -->
     <div class="tpl-header-fluid">
@@ -16,12 +16,12 @@
             <ul>
                 <li class="am-text-sm">
                     <div class="tpl-user-panel-profile-picture">
-                        <img src="{{ \App\Services\CacheService::getAvatar() }}" alt="" class="am-img-bdrs" >
+                        <img src="" alt="" class="am-img-bdrs" >
                     </div>
                 </li>
                 <li class="am-text-sm">
-                    <a href="{{ url('/admin/users')}}" style="padding: 0 5px;">
-                        <span style="color: #0C0C0C">{{ \Illuminate\Support\Facades\Auth::guard('web')->user()->name }}</span>
+                    <a href="/admin/users" style="padding: 0 5px;">
+                        <span style="color: #0C0C0C"></span>
                     </a>
                 </li>
                 <!-- 退出 -->
@@ -38,10 +38,10 @@
 
 <script>
     function logout() {
-        axios.delete("{{ url('/admin/logout') }}").then(function (response) {
+        axios.delete("/admin/logout").then(function (response) {
             layer.msg('注销成功', {
                 }, function () {
-                    window.location = "{{ url('/admin/login') }}";
+                    window.location = "/admin/login";
                 }
             );
         }).catch(function (error) {

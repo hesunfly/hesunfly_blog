@@ -30,7 +30,7 @@
         <div class="row-content am-cf">
             <div class="row  am-cf">
                 <div class="am-u-sm-12 am-u-md-6 am-u-lg-4">
-                    <div class="widget widget-primary am-cf" onclick="window.location.href='{{ url('/admin/articles/') }}'">
+                    <div class="widget widget-primary am-cf" onclick="window.location.href='/admin/articles'">
                         <div class="widget-statistic-header" style="font-size: 27px;">
                             文章数量
                         </div>
@@ -44,13 +44,13 @@
                     </div>
                 </div>
                 <div class="am-u-sm-12 am-u-md-6 am-u-lg-4">
-                    <div class="widget widget-primary am-cf" onclick="window.location.href='{{ url('admin/images/') }}'">
+                    <div class="widget widget-primary am-cf" onclick="window.location.href='admin/images/'">
                         <div class="widget-statistic-header" style="font-size: 27px;">
                             图片数量
                         </div>
                         <div class="widget-statistic-body">
                             <div class="widget-statistic-value">
-                                {{ \App\Models\Image::count() }}
+{{--                                {{ \App\Models\Image::count() }}--}}
                             </div>
 
                             <span class="widget-statistic-icon am-icon-file-image-o"></span>
@@ -58,13 +58,13 @@
                     </div>
                 </div>
                 <div class="am-u-sm-12 am-u-md-6 am-u-lg-4">
-                    <div class="widget widget-primary am-cf" onclick="window.location.href='{{ url('admin/ips/') }}'">
+                    <div class="widget widget-primary am-cf" onclick="window.location.href='admin/ips'">
                         <div class="widget-statistic-header" style="font-size: 27px;">
                             浏览次数
                         </div>
                         <div class="widget-statistic-body">
                             <div class="widget-statistic-value">
-                                {{ \App\Models\Ip::count() }}
+{{--                                {{ \App\Models\Ip::count() }}--}}
                             </div>
 
                             <span class="widget-statistic-icon am-icon-eye"></span>

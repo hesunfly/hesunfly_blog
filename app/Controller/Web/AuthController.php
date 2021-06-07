@@ -13,14 +13,15 @@ namespace App\Controller\Web;
 
 use App\Model\User;
 use App\Request\AuthRequest;
+use Hyperf\Contract\SessionInterface;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpMessage\Exception\UnauthorizedHttpException;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\PostMapping;
+use Hyperf\HttpServer\Contract\ResponseInterface;
 use Hyperf\View\RenderInterface;
 use HyperfExt\Hashing\Hash;
-use Hyperf\HttpServer\Contract\ResponseInterface;
 use Qbhy\HyperfAuth\Annotation\Auth;
 use Qbhy\HyperfAuth\AuthManager;
 
@@ -28,7 +29,7 @@ use Qbhy\HyperfAuth\AuthManager;
  * @Controller(prefix="auth")
  * Class AuthController
  */
-class AuthController extends Controller
+class AuthController extends BaseController
 {
     /**
      * @Inject
@@ -64,12 +65,11 @@ class AuthController extends Controller
         }
 
         $this->auth->login($user);
-
         return $response->raw('success');
     }
 
     /**
-     * @Auth()
+     * @Auth
      * @GetMapping(path="me")
      * function:
      */

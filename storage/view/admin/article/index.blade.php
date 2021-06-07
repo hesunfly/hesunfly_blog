@@ -30,7 +30,7 @@
                                     <div class="am-btn-toolbar">
                                         <div class="am-btn-group am-btn-group-xs">
                                             <button type="button" class="am-btn am-btn-success am-round"
-                                                    onclick="location.href='{{ url('/admin/articles/write') }}'">
+                                                    onclick="location.href='/admin/articles/write'">
                                                 <span class="am-icon-plus"></span> 新增
                                             </button>
                                         </div>
@@ -85,11 +85,11 @@
                                             <td>{{ $item->created_at }}</td>
                                             <td>
                                                 <div class="tpl-table-black-operation">
-                                                    <a href="{{ url('/articles/') . '/' . $item->slug}}" target="_blank"
+                                                    <a href="{{ '/articles/' . '/' . $item->slug}}" target="_blank"
                                                        style="border: 1px solid orange;color: orange;">
                                                         <i class="am-icon-eye"></i> 查看
                                                     </a>
-                                                    <a href="{{ url('/admin/articles/edit') . '/' . $item->id }}">
+                                                    <a href="{{ '/admin/articles/edit') . '/' . $item->id}}">
                                                         <i class="am-icon-pencil"></i> 编辑
                                                     </a>
                                                     <a href="javascript:;" onclick="destroy('{{ $item->id }}')"
@@ -144,7 +144,7 @@
     function search() {
         let category = $('.am-selected-status').text();
         let keyword = $('#keyword').val();
-        let url = "{{ url('admin/articles/search') }}" + '/' + category + '/' + keyword;
+        let url = "{{ 'admin/articles/search' }}" + '/' + category + '/' + keyword;
         window.location.href = url;
     }
 
@@ -157,12 +157,12 @@
             title: '⚠️',
             btn: ['删除', '取消'] //按钮
         }, function () {
-            axios.delete("{{ url('/admin/articles/destroy') }}" + '/' + id)
+            axios.delete("{{ '/admin/articles/destroy' }}" + '/' + id)
                 .then(function (response) {
                     layer.msg('删除成功！', {
                             time: 1000 //2秒关闭（如果不配置，默认是3秒）
                         }, function () {
-                            window.location = "{{ url('/admin/articles/') }}";
+                            window.location = "{{ '/admin/articles/' }}";
                         }
                     );
                 })
