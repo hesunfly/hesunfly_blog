@@ -77,7 +77,8 @@
                     }
                 );
             }).catch(function (error) {
-                if (error.request.status === 422) {
+                let error_status = error.request.status
+                if (error_status === 422 || error_status === 401) {
                     let msg = error.request.responseText;
                     layer.msg(msg, {
                             time: 2000 //2秒关闭（如果不配置，默认是3秒）

@@ -17,6 +17,7 @@ return [
             \Hyperf\ExceptionHandler\Handler\WhoopsExceptionHandler::class,
             \Hyperf\ExceptionHandler\Listener\ErrorExceptionHandler::class,
             \Hyperf\Validation\ValidationExceptionHandler::class,
+        \App\Exception\Handler\AuthExceptionHandler::class,
         ],
     ],
 ];

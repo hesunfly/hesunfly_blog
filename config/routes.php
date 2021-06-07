@@ -22,7 +22,7 @@ Router::get(
             [
                 'user_name' => 'Hesunfly',
                 'email' => 'hesunfly@163.com',
-                'password' => \HyperfExt\Hashing\Hash::make('123456'),
+                'password' => \HyperfExt\Hashing\Hash::make('MTIzNDU2'),
             ]
         );
     }
