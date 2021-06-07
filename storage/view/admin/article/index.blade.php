@@ -30,7 +30,7 @@
                                     <div class="am-btn-toolbar">
                                         <div class="am-btn-group am-btn-group-xs">
                                             <button type="button" class="am-btn am-btn-success am-round"
-                                                    onclick="location.href='/admin/articles/write'">
+                                                    onclick="location.href='/admin/article/create'">
                                                 <span class="am-icon-plus"></span> 新增
                                             </button>
                                         </div>
@@ -44,14 +44,14 @@
                                         @foreach($categories as $item)
 
                                             <option value=" "
-                                                    @if ($category_id === $item->id) selected @endif>{{ $item->category_title }}</option>
+                                                    @if ($category_id === $item->id) selected @endif>{{ $item->title }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
                                 <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
-                                    <input type="text" class="am-form-field " id="keyword" value="{{ $keyword }}">
+                                    <input type="text" class="am-form-field " id="keyword" value="{{ $keyword ?? ''}}">
                                     <span class="am-input-group-btn">
             <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search"
                     type="button" id="search"></button>
@@ -74,7 +74,7 @@
                                     @foreach ($articles as $item)
                                         <tr class="gradeX">
                                             <td>{{ $item->title }}</td>
-                                            <td>{{ $item->category->category_title }}</td>
+                                            <td>{{ $item->category->title }}</td>
                                             <td>
                                                 @if ($item->status == 1)
                                                     <span style="color: green;font-weight: bold;">已发布</span>
@@ -85,11 +85,11 @@
                                             <td>{{ $item->created_at }}</td>
                                             <td>
                                                 <div class="tpl-table-black-operation">
-                                                    <a href="{{ '/articles/' . '/' . $item->slug}}" target="_blank"
+                                                    <a href="{{ '/article/' . '/' . $item->slug}}" target="_blank"
                                                        style="border: 1px solid orange;color: orange;">
                                                         <i class="am-icon-eye"></i> 查看
                                                     </a>
-                                                    <a href="{{ '/admin/articles/edit') . '/' . $item->id}}">
+                                                    <a href="{{ '/admin/article/edit' . '/' . $item->id }}">
                                                         <i class="am-icon-pencil"></i> 编辑
                                                     </a>
                                                     <a href="javascript:;" onclick="destroy('{{ $item->id }}')"
@@ -104,7 +104,6 @@
                                 </table>
                             </div>
                             <div class="am-u-lg-12 am-cf">
-
                                 <div class="am-cf">
                                     <ul class="am-pagination am-pagination-centered">
                                         @if ($articles->currentPage() != 1)
@@ -144,7 +143,7 @@
     function search() {
         let category = $('.am-selected-status').text();
         let keyword = $('#keyword').val();
-        let url = "{{ 'admin/articles/search' }}" + '/' + category + '/' + keyword;
+        let url = "{{ 'admin/article/search' }}" + '/' + category + '/' + keyword;
         window.location.href = url;
     }
 
@@ -157,12 +156,12 @@
             title: '⚠️',
             btn: ['删除', '取消'] //按钮
         }, function () {
-            axios.delete("{{ '/admin/articles/destroy' }}" + '/' + id)
+            axios.delete("{{ '/admin/article/destroy' }}" + '/' + id)
                 .then(function (response) {
                     layer.msg('删除成功！', {
                             time: 1000 //2秒关闭（如果不配置，默认是3秒）
                         }, function () {
-                            window.location = "{{ '/admin/articles/' }}";
+                            window.location = "{{ '/admin/article/' }}";
                         }
                     );
                 })

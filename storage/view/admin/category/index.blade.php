@@ -30,7 +30,7 @@
                                     <div class="am-btn-toolbar">
                                         <div class="am-btn-group am-btn-group-xs">
                                             <button type="button" class="am-btn am-btn-success am-round"
-                                                    onclick="location.href='{{ url('/admin/categories/create') }}'">
+                                                    onclick="location.href='/admin/category/create'">
                                                 <span class="am-icon-plus"></span> 新增
                                             </button>
                                         </div>
@@ -51,15 +51,15 @@
                                     <tbody>
                                     @foreach ($categories as $item)
                                         <tr class="gradeX">
-                                            <td>{{ $item->category_title }}</td>
-                                            <td>{{ $item->articles_count }}</td>
+                                            <td>{{ $item->title }}</td>
+                                            <td>{{ $item->count }}</td>
                                             <td>{{ $item->created_at->toDateString()  }}</td>
                                             <td>
                                                 <div class="tpl-table-black-operation">
-                                                    <a href="{{ url('admin/articles/search') . '/' . $item->category_title }}" style="border: green 1px solid;color: green;">
+                                                    <a href="{{ 'admin/article/search' . '/' . $item->title }}" style="border: green 1px solid;color: green;">
                                                         <i class="am-icon-eye"></i> 查看文章
                                                     </a>
-                                                    <a href="{{ url('/admin/categories/edit') . '/' . $item->id }}">
+                                                    <a href="{{ '/admin/category/edit' . '/' . $item->id }}">
                                                         <i class="am-icon-pencil"></i> 编辑
                                                     </a>
                                                     <a href="javascript:;" onclick="destroy({{ $item->id }})"
@@ -93,12 +93,12 @@
             title: '⚠️',
             btn: ['删除', '取消'] //按钮
         }, function () {
-            axios.delete("{{ url('/admin/categories/destroy') }}" + '/' + id)
+            axios.delete("/admin/category/destroy" + '/' + id)
                 .then(function (response) {
                     layer.msg('删除成功！', {
                             time: 1000 //2秒关闭（如果不配置，默认是3秒）
                         }, function () {
-                            window.location = "{{ url('/admin/categories/') }}";
+                            window.location = "/admin/category";
                         }
                     );
                 })

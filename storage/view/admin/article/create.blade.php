@@ -64,8 +64,8 @@
                                     <div class="am-u-sm-9">
                                         <select class="am-form" name="category" id="category">
                                             <option value="">选择分类</option>
-                                            @foreach ($categories as $item)
-                                                <option value="{{ $item['id'] }}">{{ $item['category_title'] }}</option>
+                                            @foreach ($category as $item)
+                                                <option value="{{ $item['id'] }}">{{ $item['title'] }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -138,7 +138,7 @@
                 '|', 'preview', 'side-by-side', 'fullscreen'],
         });
         inlineAttachment.editors.codemirror4.attach(simplemde.codemirror, {
-            uploadUrl: "{{ url('/admin/images/upload') }}",
+            uploadUrl: "/admin/upload/image",
             uploadFieldName: 'image',
             extraParams: {},
         });
@@ -202,7 +202,7 @@
             let status = $("input[name='status']:checked").val();
 
             axios.post(
-                "{{ url('/admin/articles/store') }}",
+                "/admin/article/store",
                 {
                     'title': title,
                     'description': description,
@@ -216,11 +216,11 @@
                 layer.msg('创建成功！', {
                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                     }, function () {
-                        window.location = "{{ url('/admin/articles') }}";
+                        window.location = "/admin/article";
                     }
                 );
             }).catch(function (error) {
-                layer.msg('error！', {
+                layer.msg(error.request.responseText, {
                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                     }, function () {
                         return false;

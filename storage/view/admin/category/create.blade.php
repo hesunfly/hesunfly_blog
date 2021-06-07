@@ -72,7 +72,7 @@
             }
 
             axios.post(
-                "{{ url('/admin/categories/store') }}",
+                "/admin/category/store",
                 {
                     'title': category_title
                 }
@@ -80,7 +80,7 @@
                 layer.msg('创建成功！', {
                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                     }, function () {
-                        window.location = "{{ url('/admin/categories') }}";
+                        window.location = "/admin/category";
                     }
                 );
             }).catch(function (error) {

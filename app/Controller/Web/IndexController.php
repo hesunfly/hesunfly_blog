@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 namespace App\Controller\Web;
 
+use App\Model\Article;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
@@ -30,6 +31,7 @@ class IndexController extends BaseController
      */
     public function index(RenderInterface $render)
     {
-        return $render->render('admin.index');
+        $article_count = Article::query()->where('status', 1)->count();
+        return $render->render('admin.index', ['article_count' => $article_count]);
     }
 }

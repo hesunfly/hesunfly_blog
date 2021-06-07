@@ -3,17 +3,17 @@
     <ul class="sidebar-nav">
         <li class="sidebar-nav-heading">文章</li>
         <li class="sidebar-nav-link">
-            <a href="/admin/articles/write" @if ($uri == '/admin/articles/write') class="active" @endif >
+            <a href="/admin/article/create" @if ($uri == '/admin/article/create') class="active" @endif >
                 <i class="am-icon-edit sidebar-nav-link-logo"></i> 写作
             </a>
         </li>
         <li class="sidebar-nav-link">
-            <a href="/admin/articles" @if ( $uri != '/admin/articles/write' && mb_strstr($uri, '/admin/articles')) class="active" @endif >
+            <a href="/admin/article" @if ( $uri != '/admin/article/write' && mb_strstr($uri, '/admin/article')) class="active" @endif >
                 <i class="am-icon-file-text-o sidebar-nav-link-logo"></i> 文章
             </a>
         </li>
         <li class="sidebar-nav-link">
-            <a href="/admin/categories" @if (mb_strstr($uri, '/admin/categories')) class="active" @endif>
+            <a href="/admin/category" @if (mb_strstr($uri, '/admin/category')) class="active" @endif>
                 <i class="am-icon-folder-o sidebar-nav-link-logo"></i> 分类
             </a>
         </li>
