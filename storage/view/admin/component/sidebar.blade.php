@@ -2,13 +2,16 @@
     <!-- 菜单 -->
     <ul class="sidebar-nav">
         <li class="sidebar-nav-heading">文章</li>
+        @php
+        $uri = make(\Hyperf\HttpServer\Contract\RequestInterface::class)->getRequestUri();
+        @endphp
         <li class="sidebar-nav-link">
             <a href="/admin/article/create" @if ($uri == '/admin/article/create') class="active" @endif >
                 <i class="am-icon-edit sidebar-nav-link-logo"></i> 写作
             </a>
         </li>
         <li class="sidebar-nav-link">
-            <a href="/admin/article" @if ( $uri != '/admin/article/write' && mb_strstr($uri, '/admin/article')) class="active" @endif >
+            <a href="/admin/article" @if ( $uri != '/admin/article/create' && mb_strstr($uri, '/admin/article')) class="active" @endif >
                 <i class="am-icon-file-text-o sidebar-nav-link-logo"></i> 文章
             </a>
         </li>

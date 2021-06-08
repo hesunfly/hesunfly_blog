@@ -28,14 +28,14 @@
 
                             <form class="am-form tpl-form-line-form">
                                 <div class="am-form-group">
-                                    <label for="name" class="am-u-sm-3 am-form-label">用户名 <small><span
+                                    <label for="user_name" class="am-u-sm-3 am-form-label">用户名 <small><span
                                                     style="color: red;">*</span></small>
                                         <span
                                                 class="tpl-form-line-small-title">Name</span></label>
                                     <div class="am-u-sm-9">
-                                        <input type="text" class="tpl-form-input" id="name"
-                                               name="name" required  placeholder="请输入用户名"
-                                               value="{{ $user->name }}">
+                                        <input type="text" class="tpl-form-input" id="user_name"
+                                               name="user_name" required  placeholder="请输入用户名"
+                                               value="{{ $user->user_name }}">
                                     </div>
                                 </div>
 
@@ -148,7 +148,7 @@
             let avatar = $('#avatar').val();
 
             axios.put(
-                "{{ url('/admin/users')}}",
+                "/auth/user/save",
                 {
                     'name': name,
                     'email': email,
@@ -159,11 +159,11 @@
                 layer.msg('修改成功！', {
                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                     }, function () {
-                        if (+response.status === 201) {
-                            axios.delete("{{ url('/admin/logout') }}").then(function (response) {
+                        if (response.status === 201) {
+                            axios.delete("/auth/logout'").then(function (response) {
                                 layer.msg('请重新登录！', {
                                     }, function () {
-                                        window.location = "{{ url('/admin/login') }}";
+                                        window.location = "auth/login";
                                     }
                                 );
                             });
@@ -172,18 +172,12 @@
 
                 );
             }).catch(function (error) {
-                layer.msg('error！', {
+                layer.msg(error.request.responseText, {
                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                     }, function () {
                         return false;
                     }
                 );
-                if (error.request.status === 422) {
-                    let msg = JSON.parse(error.request.responseText);
-                    let errors = msg.errors;
-                    let length = errors.length;
-                    // if (errors.email[0]);
-                }
             });
         });
     });

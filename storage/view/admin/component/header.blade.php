@@ -1,7 +1,7 @@
 <header>
     <!-- logo -->
     <div class="am-fl tpl-header-logo">
-        <a href="/admin/"><img src="" alt="" style="height: 55px;width: auto;"></a>
+        <a href="/admin/"><img src="/assets/images/Hesunfly-Blog-Logo.png" alt="" style="height: 55px;width: auto;"></a>
     </div>
     <!-- 右侧内容 -->
     <div class="tpl-header-fluid">
@@ -16,12 +16,12 @@
             <ul>
                 <li class="am-text-sm">
                     <div class="tpl-user-panel-profile-picture">
-                        <img src="" alt="" class="am-img-bdrs" >
+                        <img src="/assets/images/avatar.jpg" alt="" class="am-img-bdrs" >
                     </div>
                 </li>
                 <li class="am-text-sm">
-                    <a href="/admin/users" style="padding: 0 5px;">
-                        <span style="color: #0C0C0C"></span>
+                    <a href="/auth/user/edit" style="padding: 0 5px;">
+                        <span style="color: #0C0C0C">{{ make(\Qbhy\HyperfAuth\AuthManager::class)->user()->user_name }}</span>
                     </a>
                 </li>
                 <!-- 退出 -->
@@ -38,10 +38,10 @@
 
 <script>
     function logout() {
-        axios.delete("/admin/logout").then(function (response) {
+        axios.delete("/auth/logout").then(function (response) {
             layer.msg('注销成功', {
                 }, function () {
-                    window.location = "/admin/login";
+                    window.location = "/auth/login";
                 }
             );
         }).catch(function (error) {

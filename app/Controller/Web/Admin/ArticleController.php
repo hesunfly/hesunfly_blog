@@ -9,7 +9,7 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-namespace App\Controller\Web;
+namespace App\Controller\Web\Admin;
 
 use App\Event\ArticleDeleteEvent;
 use App\Exception\DbQueryException;
@@ -18,18 +18,22 @@ use App\Exception\ValidateException;
 use App\Model\Article;
 use App\Model\Category;
 use App\Request\ArticleRequest;
+use Carbon\Carbon;
 use Hyperf\DbConnection\Db;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
 use Hyperf\HttpServer\Annotation\PostMapping;
+use Hyperf\HttpServer\Contract\RequestInterface;
+use Hyperf\HttpServer\Contract\ResponseInterface;
 use Hyperf\Utils\Exception\ParallelExecutionException;
 use Hyperf\Utils\Parallel;
 use Hyperf\Utils\Str;
-use Hyperf\View\RenderInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Qbhy\HyperfAuth\AuthMiddleware;
+
+use function Hyperf\ViewEngine\view;
 
 /**
  * @Controller(prefix="admin/article")
@@ -48,7 +52,7 @@ class ArticleController extends BaseController
      * @GetMapping(path="")
      * function:
      */
-    public function index(RenderInterface $render)
+    public function index()
     {
         $parallel = new Parallel();
         $parallel->add(
@@ -79,7 +83,7 @@ class ArticleController extends BaseController
             throw new DbQueryException('首页文章列表查询失败');
         }
 
-        return $render->render(
+        return view(
             'admin.article.index',
             ['articles' => $arr['articles'], 'categories' => $arr['category']]
         );
@@ -87,20 +91,19 @@ class ArticleController extends BaseController
 
     /**
      * @GetMapping(path="create")
-     * @return \Psr\Http\Message\ResponseInterface
-     *                                             function:
+     *                                            function:
      */
-    public function create(RenderInterface $render)
+    public function create()
     {
         $category = $this->getCategory();
-        return $render->render('admin.article.create', ['category' => $category]);
+        return view('admin.article.create', ['category' => $category]);
     }
 
     /**
      * @PostMapping(path="store")
      * function:
      */
-    public function store(ArticleRequest $request)
+    public function store(ArticleRequest $request, ResponseInterface $response)
     {
         $params = $request->all();
 
@@ -108,18 +111,20 @@ class ArticleController extends BaseController
 
         Db::beginTransaction();
         try {
-            Article::query()->create($params);
-            //如果文章发布了生成二维码
             if ($params['status'] == 1) {
                 Category::query()->where('id', $params['category_id'])->increment('count');
+                $params['publish_at'] = Carbon::now();
             }
+            Article::query()->create($params);
+            //如果文章发布了生成二维码
+
             Db::commit();
         } catch (\Throwable $exception) {
             Db::rollBack();
             throw new DbSaveException('文章保存失败！');
         }
 
-        return $this->response->raw('success')->withStatus(201);
+        return $response->raw('success')->withStatus(201);
     }
 
     public function edit()
@@ -130,9 +135,9 @@ class ArticleController extends BaseController
     {
     }
 
-    public function delete()
+    public function delete(RequestInterface $request, ResponseInterface $response)
     {
-        $id = $this->request->input('id');
+        $id = $request->input('id');
 
         if (empty($id)) {
             throw new ValidateException('id 参数为空');
@@ -144,7 +149,7 @@ class ArticleController extends BaseController
         //相关分类文章数减一
         $this->eventDispatcher->dispatch(new ArticleDeleteEvent($article));
 
-        return $this->response->raw('success');
+        return $response->raw('success');
     }
 
     private function getCategory()

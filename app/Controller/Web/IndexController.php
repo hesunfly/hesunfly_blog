@@ -11,27 +11,52 @@ declare(strict_types=1);
  */
 namespace App\Controller\Web;
 
+use App\Controller\AbstractController;
+use App\Exception\ValidateException;
 use App\Model\Article;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
-use Hyperf\HttpServer\Annotation\Middleware;
 use Hyperf\View\RenderInterface;
-use Qbhy\HyperfAuth\AuthMiddleware;
 
 /**
- * @Controller(prefix="admin")
- * @Middleware(AuthMiddleware::class)
+ * @Controller(prefix="/")
  * Class IndexController
  */
-class IndexController extends BaseController
+class IndexController extends AbstractController
 {
     /**
-     * @GetMapping(path="")
+     * @GetMapping(path="/")
+     * @return \Psr\Http\Message\ResponseInterface
      * function:
      */
     public function index(RenderInterface $render)
     {
-        $article_count = Article::query()->where('status', 1)->count();
-        return $render->render('admin.index', ['article_count' => $article_count]);
+        $articles = Article::query()
+            ->with('category')
+            ->where('status', 1)
+            ->orderByDesc('publish_at')
+            ->paginate(10);
+
+        return $render->render('index', ['articles' => $articles]);
+    }
+
+    /**
+     * @GetMapping(path="/article")
+     * @param RenderInterface $render
+     * @return \Psr\Http\Message\ResponseInterface
+     * function:
+     */
+    public function show(RenderInterface $render)
+    {
+        $slug = $this->request->input('slug');
+        if (empty($slug)) {
+            throw new ValidateException('slug 参数为空');
+        }
+        $article = Article::query()
+            ->where('slug', $slug)
+            ->where('status', 1)
+            ->firstOrFail();
+
+        return $render->render('article', ['article' => $article]);
     }
 }

@@ -1,14 +1,14 @@
 @component('component.head', ['title' => env('APP_NAME')])
 @endcomponent
 
-@component('component.header', ['pages' => \App\Services\CacheService::getPages(), 'keyword' => $keyword])
+@component('component.header', ['pages' => [], 'keyword' => $keyword ?? ''])
 @endcomponent
 
 <div class="container mx-auto px-5 lg:max-w-screen-sm" style="padding-bottom: 100px;">
     @if (count($articles) !== 0)
     @foreach( $articles as $item)
         <a class="no-underline transition block border border-lighter w-full mb-4 p-3 rounded post-card"
-           href="{{ url('articles/' . $item->slug)}}" style="background-color: #F5FFFA;">
+           href="{{ 'article?slug=' . $item->slug }}" style="background-color: #F5FFFA;">
             <div class="flex flex-col justify-between flex-1">
                 <div>
                     <h2 class="font-sans block leading-normal mb-1" style="font-size: 1.25rem;">
@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="flex items-center text-sm text-light">
-                    <span style="margin-left: 5px;"> <i class="fa fa-folder"></i> {{ $item->category->category_title }}</span>
+                    <span style="margin-left: 5px;"> <i class="fa fa-folder"></i> {{ $item->category->title }}</span>
                     &nbsp;&nbsp;
                     <span class="ml-2"> <i class="fa fa-eye"></i> {{ $item->view_count }} </span>
                     <span class="ml-auto">{{ $item->publish_at}}</span>

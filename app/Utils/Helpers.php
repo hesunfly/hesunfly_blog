@@ -55,7 +55,7 @@ function is_mobile($string = '')
 /**
  * @param string $mobile
  * @return string
- * 隐藏手机号
+ *                隐藏手机号
  */
 function hidden_mobile($mobile = ''): string
 {
@@ -156,13 +156,14 @@ function ext_json_decode($str, $mode = false)
     return json_decode($str, $mode);
 }
 
-function getDate($time)
-{
-    $time ?: time();
-    return date('Y-m-d H:i:s', $time);
-}
-
 function getRedis()
 {
     return ApplicationContext::getContainer()->get(Redis::class);
+}
+
+function isDesktop(): bool
+{
+    $detect = new Mobile_Detect();
+
+    return ! $detect->isMobile() && ! $detect->isTablet();
 }

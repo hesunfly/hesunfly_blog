@@ -8,9 +8,9 @@
     <div class="border-t border-lighter mt-20" style="margin-top: 0px;">
         <div class="container mx-auto px-4 lg:max-w-screen">
             <div class="text-muted py-4 text-center">
-                @if (\Jenssegers\Agent\Facades\Agent::isDesktop())
+                @if (isDesktop())
                     <div style="margin-bottom: 25px;">
-                        @if (count($ads = \App\Services\CacheService::getAds()) > 0)
+                        {{--@if (count($ads = \App\Services\CacheService::getAds()) > 0)
                             @foreach($ads as $item)
                             <div style="display: inline-block;">
                                 <a target="_blank" style="display: inline-block;" href="{{ $item->url }}">
@@ -20,7 +20,7 @@
                                 </a>
                             </div>
                             @endforeach
-                            @endif
+                            @endif--}}
                     </div>
                 @endif
 
@@ -32,7 +32,7 @@
                         订阅
                     </button>
                 </div>
-                <div class="py-2">
+                {{--<div class="py-2">
                     <span><a href="mailto:{{ \App\Services\CacheService::getConfig('email') }}"><i
                                     class="fa fa-envelope"></i></a></span>
                     <span style="display: inline-block; width: 0.5rem;"></span>
@@ -44,7 +44,7 @@
                     Copyright © <a href="http://hesunfly.com" style="text-decoration: none">Hesunfly</a> |
                     <a href="http://www.beian.miit.gov.cn"
                        style="text-decoration: none">{{ \App\Services\CacheService::getConfig('icp_record') }}</a>
-                </p>
+                </p>--}}
             </div>
         </div>
     </div>
@@ -67,7 +67,7 @@
             }
 
             axios.post(
-                "{{ url('/subscribes') }}",
+                "/subscribes",
                 {
                     'email': email,
                 }

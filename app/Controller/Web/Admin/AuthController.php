@@ -9,21 +9,22 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-namespace App\Controller\Web;
+namespace App\Controller\Web\Admin;
 
 use App\Model\User;
 use App\Request\AuthRequest;
-use Hyperf\Contract\SessionInterface;
-use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpMessage\Exception\UnauthorizedHttpException;
 use Hyperf\HttpServer\Annotation\Controller;
+use Hyperf\HttpServer\Annotation\DeleteMapping;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\PostMapping;
+use Hyperf\HttpServer\Annotation\PutMapping;
+use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
-use Hyperf\View\RenderInterface;
 use HyperfExt\Hashing\Hash;
 use Qbhy\HyperfAuth\Annotation\Auth;
-use Qbhy\HyperfAuth\AuthManager;
+
+use function Hyperf\ViewEngine\view;
 
 /**
  * @Controller(prefix="auth")
@@ -32,18 +33,15 @@ use Qbhy\HyperfAuth\AuthManager;
 class AuthController extends BaseController
 {
     /**
-     * @Inject
-     * @var AuthManager
-     */
-    private $auth;
-
-    /**
      * @GetMapping(path="login")
      * function:
      */
-    public function login(RenderInterface $render): \Psr\Http\Message\ResponseInterface
+    public function login(ResponseInterface $response)
     {
-        return $render->render('admin.login');
+        if ($this->auth->check()) {
+            return $response->redirect('/admin');
+        }
+        return view('admin.login');
     }
 
     /**
@@ -70,11 +68,34 @@ class AuthController extends BaseController
 
     /**
      * @Auth
-     * @GetMapping(path="me")
+     * @GetMapping(path="user/edit")
      * function:
      */
-    public function user(ResponseInterface $response)
+    public function edit()
     {
-        return $response->json([$this->auth->user()]);
+        return view('admin.user', ['user' => $this->auth->user()]);
     }
+
+    /**
+     * @PutMapping(path="user/save")
+     * function:
+     */
+    public function save(RequestInterface $request)
+    {
+        $params = $request->all();
+
+    }
+
+    /**
+     * @Auth
+     * @DeleteMapping(path="logout")
+     * function:
+     */
+    public function logout(ResponseInterface $response)
+    {
+        $this->auth->logout();
+
+        return $response->raw('success')->withStatus(204);
+    }
+
 }

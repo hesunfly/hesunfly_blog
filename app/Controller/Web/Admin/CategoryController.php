@@ -9,7 +9,7 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-namespace App\Controller\Web;
+namespace App\Controller\Web\Admin;
 
 use App\Model\Category;
 use App\Request\CategoryRequest;
@@ -20,6 +20,8 @@ use Hyperf\HttpServer\Annotation\PostMapping;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 use Hyperf\View\RenderInterface;
 use Qbhy\HyperfAuth\AuthMiddleware;
+
+use function Hyperf\ViewEngine\view;
 
 /**
  * @Controller(prefix="admin/category")
@@ -32,33 +34,32 @@ class CategoryController extends BaseController
      * @GetMapping(path="")
      * function:
      */
-    public function index(RenderInterface $render)
+    public function index()
     {
         $category = Category::query()->select('id', 'title', 'count', 'created_at')->get();
-        return $render->render('admin.category.index', ['categories' => $category]);
+        return view('admin.category.index', ['categories' => $category]);
     }
 
     /**
      * @GetMapping(path="create")
      * @param RenderInterface $render
-     * @return \Psr\Http\Message\ResponseInterface
      * function:
      */
-    public function create(RenderInterface $render)
+    public function create()
     {
-        return $render->render('admin.category.create');
+        return view('admin.category.create');
     }
 
     /**
      * @PostMapping(path="store")
      * function:
      */
-    public function store(CategoryRequest $request): \Psr\Http\Message\ResponseInterface
+    public function store(CategoryRequest $request, ResponseInterface $response)
     {
         $params = $request->all();
 
         Category::query()->create(['title' => $params['title']]);
 
-        return $this->response->raw('success');
+        return $response->raw('success');
     }
 }

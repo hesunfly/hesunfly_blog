@@ -53,22 +53,22 @@
     <div class="container mx-auto px-5 lg:max-w-screen">
         <div class="flex items-center flex-col lg:flex-row">
             <a href="http://hesunfly.com" target="_blank" class="flex items-center no-underline text-brand">
-                <img src="{{ \App\Services\CacheService::getConfig('logo_img') }}" class="w-16" style="margin-top:1rem">
+                <img src="" class="w-16" style="margin-top:1rem">
             </a>
             <div class="lg:ml-auto mt-5 lg:mt-0 flex items-center" style="font-size: 1.3rem;">
                 <div style="">
                     <div class="aCssParent">
 
-                        <a href="{{ url('/') }}" class="no-underline hover:underline uppercase aCss">文章</a>
-                        @foreach($pages as $item)
+                        <a href="/'" class="no-underline hover:underline uppercase aCss">文章</a>
+                        {{--@foreach($pages as $item)
                             <a href="{{ url('/pages') . '/' . $item->slug }}"
                                class=" no-underline hover:underline uppercase aCss">{{ $item->title }}</a>
-                        @endforeach
+                        @endforeach--}}
                     </div>
                     <div class="divCss" style="">
                         <div class="border-t-2 md:border-t-0 md:border-l-2 border-off-white bg-white flex items-center md:justify-end w-full md:w-auto"
                              style="border-bottom: 1px solid #f5f5f5; border-left: 0;border-top: 0; height: 2rem;padding: 20px 6px;background-color: #F5FFFA;">
-                            <input id="keyword" type="search" placeholder="搜索" value="{{ $keyword }}"
+                            <input id="keyword" type="search" placeholder="搜索" value="{{ $keyword ?? '' }}"
                                    style="background-color: #F5FFFA;font-size: 1rem;margin-right: 10px;"
                                    class="placeholder-red flex-1 py-8 pl-8 md:py-6 focus:outline-none">
                             <button type="button" id="search"
@@ -95,7 +95,7 @@
 <script>
     let search = function () {
         let keyword = $('#keyword').val();
-        window.location.href = "{{ url('/search/') }}" + '/' + keyword;
+        window.location.href = "/search/" + '/' + keyword;
     };
 
     $('#search').click(function () {

@@ -47,4 +47,9 @@ class Article extends Model
     {
         return $this->belongsTo(Category::class, 'category_id')->select('id', 'title');
     }
+
+    public function getPublishAtAttribute($value)
+    {
+        return $value ? mb_substr($value, 0, 16) : '';
+    }
 }

@@ -9,12 +9,13 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
-namespace App\Controller\Web;
+namespace App\Controller\Web\Admin;
 
 use App\Request\UploadImageRequest;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\Middleware;
 use Hyperf\HttpServer\Annotation\PostMapping;
+use Hyperf\HttpServer\Contract\ResponseInterface;
 use Hyperf\Utils\Str;
 use Qbhy\HyperfAuth\AuthMiddleware;
 
@@ -30,7 +31,7 @@ class UploadController extends BaseController
      * function:
      * @throws \League\Flysystem\FileExistsException
      */
-    public function image(UploadImageRequest $request, \League\Flysystem\Filesystem $filesystem): \Psr\Http\Message\ResponseInterface
+    public function image(UploadImageRequest $request, ResponseInterface $response, \League\Flysystem\Filesystem $filesystem): \Psr\Http\Message\ResponseInterface
     {
         $image = $request->file('image');
 
@@ -44,6 +45,6 @@ class UploadController extends BaseController
 
         $access_path = '/' . $filePath . $filename;
 
-        return $this->response->json(['url' => $access_path]);
+        return $response->json(['url' => $access_path]);
     }
 }
