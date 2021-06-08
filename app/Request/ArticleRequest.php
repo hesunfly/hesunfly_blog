@@ -26,7 +26,7 @@ class ArticleRequest extends FormRequest
             case 'POST':
                 return [
                     'title' => ['bail', 'required', 'string', 'unique:article'],
-                    'category_id' => ['bail', 'required'],
+                    'category_id' => ['bail', 'required', 'checkArticleCategory'],
                     'description' => ['bail', 'required', 'string'],
                     'slug' => ['unique:article'],
                     'status' => ['bail', 'required', Rule::in([-1, 1])],
