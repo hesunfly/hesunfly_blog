@@ -11,12 +11,15 @@ declare(strict_types=1);
  */
 namespace App\Controller\Web;
 
+use App\Event\ArticleDeleteEvent;
 use App\Exception\DbQueryException;
 use App\Exception\DbSaveException;
+use App\Exception\ValidateException;
 use App\Model\Article;
 use App\Model\Category;
 use App\Request\ArticleRequest;
 use Hyperf\DbConnection\Db;
+use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
@@ -25,6 +28,7 @@ use Hyperf\Utils\Exception\ParallelExecutionException;
 use Hyperf\Utils\Parallel;
 use Hyperf\Utils\Str;
 use Hyperf\View\RenderInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Qbhy\HyperfAuth\AuthMiddleware;
 
 /**
@@ -34,6 +38,12 @@ use Qbhy\HyperfAuth\AuthMiddleware;
  */
 class ArticleController extends BaseController
 {
+    /**
+     * @Inject
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
     /**
      * @GetMapping(path="")
      * function:
@@ -52,7 +62,6 @@ class ArticleController extends BaseController
                 return ['articles' => $articles];
             }
         );
-
         $parallel->add(
             function () {
                 return ['category' => $this->getCategory()];
@@ -79,7 +88,7 @@ class ArticleController extends BaseController
     /**
      * @GetMapping(path="create")
      * @return \Psr\Http\Message\ResponseInterface
-     * function:
+     *                                             function:
      */
     public function create(RenderInterface $render)
     {
@@ -111,6 +120,31 @@ class ArticleController extends BaseController
         }
 
         return $this->response->raw('success')->withStatus(201);
+    }
+
+    public function edit()
+    {
+    }
+
+    public function save()
+    {
+    }
+
+    public function delete()
+    {
+        $id = $this->request->input('id');
+
+        if (empty($id)) {
+            throw new ValidateException('id 参数为空');
+        }
+
+        $article = Article::query()->where('id', $id)->firstOrFail();
+        $article->delete();
+
+        //相关分类文章数减一
+        $this->eventDispatcher->dispatch(new ArticleDeleteEvent($article));
+
+        return $this->response->raw('success');
     }
 
     private function getCategory()
