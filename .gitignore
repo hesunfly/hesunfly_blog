@@ -11,4 +11,3 @@ vendor/
 .DS_Store
 .phpunit*
 *.cache
-composer.lock
