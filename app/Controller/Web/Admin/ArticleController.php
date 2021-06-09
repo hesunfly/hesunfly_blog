@@ -87,7 +87,7 @@ class ArticleController extends BaseController
 
         return view(
             'admin.article.index',
-            ['articles' => $arr['articles'], 'categories' => $arr['category']]
+            ['articles' => $arr['articles'], 'categories' => $arr['category'], 'category_id' => '']
         );
     }
 
