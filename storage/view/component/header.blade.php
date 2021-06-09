@@ -52,14 +52,14 @@
 <header class="mb-10">
     <div class="container mx-auto px-5 lg:max-w-screen">
         <div class="flex items-center flex-col lg:flex-row">
-            <a href="http://hesunfly.com" target="_blank" class="flex items-center no-underline text-brand">
-                <img src="" class="w-16" style="margin-top:1rem">
+            <a href="{{ config('app.url') }}" target="_blank" class="flex items-center no-underline text-brand">
+                <img src="{{ config('app.blog_logo') }}" class="w-16" style="margin-top:1rem">
             </a>
             <div class="lg:ml-auto mt-5 lg:mt-0 flex items-center" style="font-size: 1.3rem;">
                 <div style="">
                     <div class="aCssParent">
 
-                        <a href="/'" class="no-underline hover:underline uppercase aCss">文章</a>
+                        <a href="/" class="no-underline hover:underline uppercase aCss">文章</a>
                         {{--@foreach($pages as $item)
                             <a href="{{ url('/pages') . '/' . $item->slug }}"
                                class=" no-underline hover:underline uppercase aCss">{{ $item->title }}</a>

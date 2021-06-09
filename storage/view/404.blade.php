@@ -1,4 +1,4 @@
-@component('component.head', ['title' => env('APP_NAME')])
+@component('component.head', ['title' => config('app.blog_name')])
 @endcomponent
 
 @component('component.header', ['pages' => \App\Services\CacheService::getPages(), 'keyword' => ''])
@@ -16,7 +16,7 @@
         <div class="container mx-auto px-5 lg:max-w-screen">
             <div class="text-muted py-10 text-center">
                 Copyright © <a href="http://hesunfly.com" style="text-decoration: none">Hesunfly</a> |
-                <a href="http://www.beian.miit.gov.cn" style="text-decoration: none">陕ICP备17022875号</a>
+                <a href="http://www.beian.miit.gov.cn" style="text-decoration: none">{{ config('app.icp_number') }}</a>
             </div>
         </div>
     </div>

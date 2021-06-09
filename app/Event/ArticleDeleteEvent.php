@@ -5,11 +5,11 @@ namespace App\Event;
 class ArticleDeleteEvent
 {
 
-    public $article;
+    public $article_category_id;
 
-    public function __construct($article)
+    public function __construct($article_category_id)
     {
-        $this->article = $article;
+        $this->article_category_id = $article_category_id;
     }
 }
 

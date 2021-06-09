@@ -2,7 +2,7 @@
 
 namespace App\Event;
 
-class ArticleCreateEvent
+class ArticlePublishEvent
 {
 
     public $article;

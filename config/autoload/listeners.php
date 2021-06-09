@@ -12,5 +12,5 @@ declare(strict_types=1);
 return [
     \App\Listener\ValidateCheckArticleCategoryListener::class,
     \App\Listener\ArticleDeleteListener::class,
-    \App\Listener\ArticleCreateListener::class,
+    \App\Listener\ArticlePublishListener::class,
 ];

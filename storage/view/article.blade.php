@@ -36,13 +36,13 @@
                 </div>
             @endif
         @endif
-        {{--<div STYLE="text-align: center;display: inline-block;">
+        <div STYLE="text-align: center;display: inline-block;">
             <div style="margin-left: auto;margin-right: auto;display: inline-block;">
-                <img src="{{ \App\Services\CacheService::getConfig('reward_code_img') }}" alt="赞赏码" title="微信扫码赞赏"
+                <img src="{{ config('app.reward_code') }}" alt="赞赏码" title="微信扫码赞赏"
                      style="display: block;width: 170px;height: 170px;margin-bottom: 15px;">
-                <span style="">{{ \App\Services\CacheService::getConfig('reward_desc') }}</span>
+                <span style="">{{ config('app.reward_desc') }}</span>
             </div>
-        </div>--}}
+        </div>
     </div>
 </div>
 

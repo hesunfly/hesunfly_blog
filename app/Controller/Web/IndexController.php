@@ -35,7 +35,7 @@ class IndexController extends AbstractController
             ->with('category')
             ->where('status', 1)
             ->orderByDesc('publish_at')
-            ->paginate(10);
+            ->paginate(config('app.page_size'));
 
         return $render->render('index', ['articles' => $articles]);
     }

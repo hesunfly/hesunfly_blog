@@ -11,10 +11,12 @@ declare(strict_types=1);
  */
 namespace App\Controller\Web\Admin;
 
+use App\Event\ArticlePublishEvent;
 use App\Event\ArticleDeleteEvent;
 use App\Exception\DbQueryException;
 use App\Exception\DbSaveException;
 use App\Exception\ValidateException;
+use App\Listener\ArticlePublishListener;
 use App\Model\Article;
 use App\Model\Category;
 use App\Request\ArticleRequest;
@@ -109,19 +111,26 @@ class ArticleController extends BaseController
 
         $params['slug'] = $params['slug'] ?: 'article_' . Str::random(10);
 
+        $publish_status = $params['status'];
         Db::beginTransaction();
         try {
-            if ($params['status'] == 1) {
+            if ($publish_status == 1) {
                 Category::query()->where('id', $params['category_id'])->increment('count');
                 $params['publish_at'] = Carbon::now();
             }
-            Article::query()->create($params);
-            //如果文章发布了生成二维码
-
+            $article = Article::query()->create($params);
             Db::commit();
         } catch (\Throwable $exception) {
             Db::rollBack();
             throw new DbSaveException('文章保存失败！');
+        }
+
+        if ($publish_status == 1) {
+            go(
+                function () use ($article) {
+                    $this->eventDispatcher->dispatch(new ArticlePublishEvent($article));
+                }
+            );
         }
 
         return $response->raw('success')->withStatus(201);
@@ -144,10 +153,11 @@ class ArticleController extends BaseController
         }
 
         $article = Article::query()->where('id', $id)->firstOrFail();
+        $category_id = $article->category_id;
         $article->delete();
 
         //相关分类文章数减一
-        $this->eventDispatcher->dispatch(new ArticleDeleteEvent($article));
+        $this->eventDispatcher->dispatch(new ArticleDeleteEvent($category_id));
 
         return $response->raw('success');
     }

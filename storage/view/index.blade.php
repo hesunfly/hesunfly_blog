@@ -1,4 +1,4 @@
-@component('component.head', ['title' => env('APP_NAME')])
+@component('component.head', ['title' => config('app.blog_name')])
 @endcomponent
 
 @component('component.header', ['pages' => [], 'keyword' => $keyword ?? ''])
