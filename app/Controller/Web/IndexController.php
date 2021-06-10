@@ -31,6 +31,7 @@ class IndexController extends AbstractController
      */
     public function index(RenderInterface $render)
     {
+        getIpAddress();
         $articles = Article::query()
             ->with('category')
             ->where('status', 1)

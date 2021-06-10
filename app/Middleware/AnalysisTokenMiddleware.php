@@ -33,7 +33,7 @@ class AnalysisTokenMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $token = $request->getHeaderLine('Authorization');
+        /*$token = $request->getHeaderLine('Authorization');
         $deviceType = $request->getHeaderLine('DeviceType');
         if ($token) {
             $token_info = $this->jwt->getParserData();
@@ -46,6 +46,6 @@ class AnalysisTokenMiddleware implements MiddlewareInterface
             Context::getOrSet('device_type', $deviceType);
         }
 
-        return $handler->handle($request);
+        return $handler->handle($request);*/
     }
 }

@@ -39,7 +39,7 @@ class UploadController extends BaseController
 
         $extension = strtolower($image->getExtension());
         $filename = 'hesunfly-blog' . '-' . time() . '-' . Str::random(10) . '.' . $extension;
-        $filePath = 'upload/' . 'image' . '/' . date('Y-m');
+        $filePath = 'upload/' . 'image' . '/' . date('Y-m') . '/';
         $filesystem->writeStream($filePath . $filename, $stream);
         fclose($stream);
 

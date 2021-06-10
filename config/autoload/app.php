@@ -10,5 +10,5 @@ return [
     'icp_number' => '陕ICP备17022875号',
     'email' => 'hesunfly@163.com',
     'github' => 'https://github.com/hesunfly',
-    'url' => 'http://blog.test',
+    'url' => env('APP_URL', 'http://blog.test'),
 ];

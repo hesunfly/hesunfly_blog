@@ -12,6 +12,7 @@ declare(strict_types=1);
 use Hyperf\Redis\Redis;
 use Hyperf\Utils\ApplicationContext;
 use Hyperf\Utils\Context;
+use Torann\GeoIP\Support\HttpClient;
 
 function guid()
 {
