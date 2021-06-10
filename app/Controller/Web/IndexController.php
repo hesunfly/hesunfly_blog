@@ -13,13 +13,16 @@ namespace App\Controller\Web;
 
 use App\Controller\AbstractController;
 use App\Exception\ValidateException;
+use App\Middleware\VisitRecordMiddleware;
 use App\Model\Article;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
+use Hyperf\HttpServer\Annotation\Middleware;
 use Hyperf\View\RenderInterface;
 
 /**
  * @Controller(prefix="/")
+ * @Middleware(VisitRecordMiddleware::class)
  * Class IndexController
  */
 class IndexController extends AbstractController
@@ -27,11 +30,10 @@ class IndexController extends AbstractController
     /**
      * @GetMapping(path="/")
      * @return \Psr\Http\Message\ResponseInterface
-     * function:
+     *                                             function:
      */
     public function index(RenderInterface $render)
     {
-        getIpAddress();
         $articles = Article::query()
             ->with('category')
             ->where('status', 1)
@@ -43,9 +45,8 @@ class IndexController extends AbstractController
 
     /**
      * @GetMapping(path="/article")
-     * @param RenderInterface $render
      * @return \Psr\Http\Message\ResponseInterface
-     * function:
+     *                                             function:
      */
     public function show(RenderInterface $render)
     {

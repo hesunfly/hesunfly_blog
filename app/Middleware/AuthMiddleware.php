@@ -6,8 +6,6 @@ namespace App\Middleware;
 
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface as HttpResponse;
-use Phper666\JwtAuth\Exception\TokenValidException;
-use Phper666\JwtAuth\Jwt;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

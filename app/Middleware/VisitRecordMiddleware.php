@@ -13,43 +13,40 @@ namespace App\Middleware;
 
 use App\Model\VisitRecord;
 use Hyperf\HttpServer\Contract\RequestInterface;
+use Hyperf\Utils\ApplicationContext;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class RecordVisitMiddleware implements MiddlewareInterface
+class VisitRecordMiddleware implements MiddlewareInterface
 {
     /**
      * @var ContainerInterface
      */
     protected $container;
 
-    /**
-     * @var RequestInterface
-     */
-    protected $request;
-
-    public function __construct(ContainerInterface $container, RequestInterface $request)
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->request = $request;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $uri = ApplicationContext::getContainer()->get(RequestInterface::class)->getRequestUri();
+        $ip = get_client_ip();
         go(
-            function () {
-                $ip = get_client_ip();
+            function () use ($uri, $ip) {
                 VisitRecord::query()->create(
                     [
                         'ip' => $ip,
-                        'uri' => $this->request->getRequestUri(),
+                        'uri' => $uri,
                     ]
                 );
             }
         );
+
         return $handler->handle($request);
     }
 }
