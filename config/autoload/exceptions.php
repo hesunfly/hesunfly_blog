@@ -19,7 +19,8 @@ return [
             \Hyperf\Validation\ValidationExceptionHandler::class,
             \App\Exception\Handler\AuthExceptionHandler::class,
             \App\Exception\Handler\DbSaveExceptionHandler::class,
-            \App\Exception\Handler\DbQueryExceptionHandler::class
+            \App\Exception\Handler\DbQueryExceptionHandler::class,
+            \App\Exception\Handler\ModelNotFoundExceptionHandler::class,
         ],
     ],
 ];

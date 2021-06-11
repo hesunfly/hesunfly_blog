@@ -35,4 +35,9 @@ class Category extends Model
      * @var array
      */
     protected $casts = ['id' => 'integer', 'count' => 'integer', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
+
+    public function getCreatedAtAttribute($value)
+    {
+        return substr($value, 0, 10);
+    }
 }

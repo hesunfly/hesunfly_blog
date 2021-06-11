@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Request;
 
 use Hyperf\Validation\Request\FormRequest;
+use Hyperf\Validation\Rule;
 
 class CategoryRequest extends FormRequest
 {
@@ -21,14 +22,26 @@ class CategoryRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'title' => [
-                'bail',
-                'required',
-                'string',
-                'unique:category'
-            ],
-        ];
+        switch ($this->getMethod()) {
+            case 'POST':
+                return [
+                    'title' => [
+                        'bail',
+                        'required',
+                        'string',
+                        'unique:category'
+                    ]
+                ];
+            case "PUT":
+                return [
+                    'title' => [
+                        'bail',
+                        'required',
+                        'string',
+                        Rule::unique('category')->ignore($this->input('id')),
+                    ],
+                ];
+        }
     }
 
     public function messages(): array

@@ -53,13 +53,13 @@
                                         <tr class="gradeX">
                                             <td>{{ $item->title }}</td>
                                             <td>{{ $item->count }}</td>
-                                            <td>{{ $item->created_at->toDateString()  }}</td>
+                                            <td>{{ $item->created_at }}</td>
                                             <td>
                                                 <div class="tpl-table-black-operation">
                                                     <a href="{{ 'admin/article/search' . '/' . $item->title }}" style="border: green 1px solid;color: green;">
                                                         <i class="am-icon-eye"></i> 查看文章
                                                     </a>
-                                                    <a href="{{ '/admin/category/edit' . '/' . $item->id }}">
+                                                    <a href="{{ '/admin/category/edit' . '?id=' . $item->id }}">
                                                         <i class="am-icon-pencil"></i> 编辑
                                                     </a>
                                                     <a href="javascript:;" onclick="destroy({{ $item->id }})"
@@ -93,7 +93,7 @@
             title: '⚠️',
             btn: ['删除', '取消'] //按钮
         }, function () {
-            axios.delete("/admin/category/destroy" + '/' + id)
+            axios.delete("/admin/category/delete" + '?id=' + id)
                 .then(function (response) {
                     layer.msg('删除成功！', {
                             time: 1000 //2秒关闭（如果不配置，默认是3秒）
@@ -103,7 +103,7 @@
                     );
                 })
                 .catch(function (error) {
-                    layer.msg('error！', {
+                    layer.msg(error.request.responseText, {
                             time: 1000 //2秒关闭（如果不配置，默认是3秒）
                         }, function () {
                             return false;

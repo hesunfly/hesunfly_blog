@@ -35,7 +35,7 @@
                                     <div class="am-u-sm-9">
                                         <input type="text" class="tpl-form-input" id="category_title"
                                                name="category_title" autofocus placeholder="请输入分类名称"
-                                               value="{{ $category_title }}">
+                                               value="{{ $category->title }}">
                                     </div>
                                 </div>
 
@@ -72,7 +72,7 @@
             }
 
             axios.put(
-                "{{ url('/admin/categories/save/') . '/' . $id }}",
+                "{{ '/admin/category/save' . '?id=' . $category->id }}",
                 {
                     'title': category_title
                 }
@@ -80,22 +80,16 @@
                 layer.msg('编辑成功！', {
                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                     }, function () {
-                        window.location = "{{ url('/admin/categories') }}";
+                        window.location = "/admin/category";
                     }
                 );
             }).catch(function (error) {
-                layer.msg('error！', {
+                layer.msg(error.request.responseText, {
                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                     }, function () {
                         return false;
                     }
                 );
-                if (error.request.status === 422) {
-                    let msg = JSON.parse(error.request.responseText);
-                    let errors = msg.errors;
-                    let length = errors.length;
-                    // if (errors.email[0]);
-                }
             });
         });
     });

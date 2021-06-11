@@ -14,7 +14,6 @@
     "require": {
         "php": ">=7.3",
         "96qbhy/hyperf-auth": "^2.3",
-        "geoip2/geoip2": "~2.0",
         "hyperf-ext/hashing": "^2.1",
         "hyperf/cache": "~2.1.0",
         "hyperf/command": "^2.1",
