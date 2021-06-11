@@ -15,6 +15,7 @@ use App\Model\Article;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
+use Hyperf\HttpServer\Contract\RequestInterface;
 use Qbhy\HyperfAuth\AuthMiddleware;
 
 use function Hyperf\ViewEngine\view;
@@ -32,7 +33,8 @@ class IndexController extends BaseController
      */
     public function index()
     {
-        $article_count = Article::query()->where('status', 1)->count();
+        $article_count = Article::query()
+            ->where('status', 1)->count();
 
         return view('admin.index', ['article_count' => $article_count]);
     }

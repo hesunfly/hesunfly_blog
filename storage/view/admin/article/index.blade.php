@@ -40,11 +40,11 @@
                             <div class="am-u-sm-12 am-u-md-6 am-u-lg-3">
                                 <div class="am-form-group tpl-table-list-select">
                                     <select data-am-selected="{btnSize: 'sm'}" id="category_select">
-                                        <option value=" " @if ($category_id === ' ') selected @endif>所有类别</option>
+                                        <option value="0" @if (empty($category_id)) selected @endif>所有类别</option>
                                         @foreach($categories as $item)
-
-                                            <option value=" "
-                                                    @if ($category_id === $item->id) selected @endif>{{ $item->title }}</option>
+                                            <option value="{{$item->id}}"
+                                                    @if ($category_id == $item->id) selected @endif>{{ $item->title }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -141,9 +141,9 @@
     });
 
     function search() {
-        let category = $('.am-selected-status').text();
+        let category = $('#category_select').val();
         let keyword = $('#keyword').val();
-        let url = "{{ 'admin/article/search' }}" + '/' + category + '/' + keyword;
+        let url = "/admin/article" + '?category=' + category + '&keyword=' + keyword;
         window.location.href = url;
     }
 

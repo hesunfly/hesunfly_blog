@@ -27,7 +27,7 @@
         "hyperf/framework": "~2.1.0",
         "hyperf/guzzle": "~2.1.0",
         "hyperf/http-server": "~2.1.0",
-        "hyperf/logger": "~2.1.0",
+        "hyperf/logger": "^2.1",
         "hyperf/memory": "~2.1.0",
         "hyperf/paginator": "^2.1",
         "hyperf/pool": "^2.1",

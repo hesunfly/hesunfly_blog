@@ -56,7 +56,7 @@
                                             <td>{{ $item->created_at }}</td>
                                             <td>
                                                 <div class="tpl-table-black-operation">
-                                                    <a href="{{ 'admin/article/search' . '/' . $item->title }}" style="border: green 1px solid;color: green;">
+                                                    <a href="{{ '/admin/article?category=' . $item->id }}" style="border: green 1px solid;color: green;">
                                                         <i class="am-icon-eye"></i> 查看文章
                                                     </a>
                                                     <a href="{{ '/admin/category/edit' . '?id=' . $item->id }}">

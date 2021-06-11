@@ -29,6 +29,7 @@ use Hyperf\HttpServer\Annotation\Middleware;
 use Hyperf\HttpServer\Annotation\PostMapping;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
+use Hyperf\Utils\ApplicationContext;
 use Hyperf\Utils\Exception\ParallelExecutionException;
 use Hyperf\Utils\Parallel;
 use Hyperf\Utils\Str;
@@ -54,14 +55,18 @@ class ArticleController extends BaseController
      * @GetMapping(path="")
      * function:
      */
-    public function index()
+    public function index(RequestInterface $request)
     {
         $parallel = new Parallel();
+        $category = $request->input('category');
         $parallel->add(
-            function () {
+            function () use ($category) {
                 $articles = Article::query()
                     ->select('id', 'category_id', 'title', 'slug', 'status', 'view_count', 'publish_at', 'created_at')
                     ->with('category')
+                    ->when($category, function ($query, $category) {
+                        $query->where('category_id', $category);
+                    })
                     ->orderByDesc('id')
                     ->paginate(10);
 
@@ -87,7 +92,7 @@ class ArticleController extends BaseController
 
         return view(
             'admin.article.index',
-            ['articles' => $arr['articles'], 'categories' => $arr['category'], 'category_id' => '']
+            ['articles' => $arr['articles'], 'categories' => $arr['category'], 'category_id' => $category]
         );
     }
 
