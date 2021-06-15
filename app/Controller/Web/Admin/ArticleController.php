@@ -11,12 +11,12 @@ declare(strict_types=1);
  */
 namespace App\Controller\Web\Admin;
 
+use App\Event\ArticleCreateEvent;
 use App\Event\ArticlePublishEvent;
 use App\Event\ArticleDeleteEvent;
 use App\Exception\DbQueryException;
 use App\Exception\DbSaveException;
 use App\Exception\ValidateException;
-use App\Listener\ArticlePublishListener;
 use App\Model\Article;
 use App\Model\Category;
 use App\Request\ArticleRequest;
@@ -27,9 +27,9 @@ use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
 use Hyperf\HttpServer\Annotation\PostMapping;
+use Hyperf\HttpServer\Annotation\PutMapping;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
-use Hyperf\Utils\ApplicationContext;
 use Hyperf\Utils\Exception\ParallelExecutionException;
 use Hyperf\Utils\Parallel;
 use Hyperf\Utils\Str;
@@ -64,9 +64,12 @@ class ArticleController extends BaseController
                 $articles = Article::query()
                     ->select('id', 'category_id', 'title', 'slug', 'status', 'view_count', 'publish_at', 'created_at')
                     ->with('category')
-                    ->when($category, function ($query, $category) {
-                        $query->where('category_id', $category);
-                    })
+                    ->when(
+                        $category,
+                        function ($query, $category) {
+                            $query->where('category_id', $category);
+                        }
+                    )
                     ->orderByDesc('id')
                     ->paginate(10);
 
@@ -120,15 +123,21 @@ class ArticleController extends BaseController
         Db::beginTransaction();
         try {
             if ($publish_status == 1) {
-                Category::query()->where('id', $params['category_id'])->increment('count');
                 $params['publish_at'] = Carbon::now();
             }
             $article = Article::query()->create($params);
+            Category::query()->where('id', $params['category_id'])->increment('count');
             Db::commit();
         } catch (\Throwable $exception) {
             Db::rollBack();
             throw new DbSaveException('文章保存失败！');
         }
+
+        go(
+            function () use ($article) {
+                $this->eventDispatcher->dispatch(new ArticleCreateEvent($article));
+            }
+        );
 
         if ($publish_status == 1) {
             go(
@@ -141,12 +150,49 @@ class ArticleController extends BaseController
         return $response->raw('success')->withStatus(201);
     }
 
-    public function edit()
+    /**
+     * @GetMapping(path="edit")
+     * @param RequestInterface $request
+     * @return \Hyperf\ViewEngine\Contract\FactoryInterface|\Hyperf\ViewEngine\Contract\ViewInterface
+     * function:
+     */
+    public function edit(RequestInterface $request)
     {
+        $id = $request->input('id');
+        $article = Article::query()
+            ->where('id', $id)
+            ->with('category')
+            ->firstOrFail();
+
+        $category = $this->getCategory();
+
+        return view('admin.article.edit', ['article' => $article, 'category' => $category]);
     }
 
-    public function save()
+    /**
+     * @PutMapping(path="save")
+     * function:
+     */
+    public function save(ArticleRequest $request, ResponseInterface $response)
     {
+        $params = $request->all();
+        $article = Article::query()->where('id', $params['id'])->firstOrFail();
+        $publish_status = $params['status'];
+
+        if ($article->publish_status == -1 && $publish_status == 1) {
+            $params['publish_at'] = Carbon::now();
+            $this->eventDispatcher->dispatch(new ArticlePublishEvent($article));
+        }
+
+        if ($article->category_id != $params['category_id']) {
+            Category::query()->where('id', $article->category_id)->decrement('count');
+            Category::query()->where('id', $params['category_id'])->increment('count');
+        }
+
+        $article = $article->update($params);
+        //文章编辑事件
+
+        return $response->raw('success')->withStatus(200);
     }
 
     public function delete(RequestInterface $request, ResponseInterface $response)

@@ -13,4 +13,5 @@ return [
     \App\Listener\ValidateCheckArticleCategoryListener::class,
     \App\Listener\ArticleDeleteListener::class,
     \App\Listener\ArticlePublishListener::class,
+    \App\Listener\ArticleCreateListener::class,
 ];

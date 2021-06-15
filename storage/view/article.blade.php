@@ -11,14 +11,14 @@
         <span>{{ $article->publish_at }}</span>
         <span style="margin-left: 1rem"><i class="fa fa-folder"></i> {{ $article->category->title }}</span>
         <span style="margin-left: 1rem"><i class="fa fa-eye"></i> {{ $article->view_count }}</span>
-        {{--@if (\Illuminate\Support\Facades\Auth::guard('web')->id() == 1)
+        @if ($auth)
             <span style="margin-left: 2rem">
-                <a href="{{ url('/admin/articles/edit/') . '/' . $article->id }}" target="_blank"
+                <a href="{{ '/admin/articles/edit/?id=' . $article->id }}" target="_blank"
                    style="text-decoration: none;">
                 编辑文章
                 </a>
             </span>
-        @endif--}}
+        @endif
     </div>
 
 
@@ -30,8 +30,9 @@
             @if (!empty($article->qr_path))
                 <div STYLE="text-align: center;display: inline-block;">
                     <div style="margin-left: auto;margin-right: auto;display: inline-block;">
-                    <img src="{{ $article->qr_path }}" alt="手机扫码浏览" title="手机扫码浏览" style="display: block;">
-                    <span style="">手机扫码查看</span>
+                        <img src="{{ $article->qr_path }}" alt="手机扫码浏览" title="手机扫码浏览"
+                             style="display: block;width: 160px;height: 160px;margin-bottom: 15px;">
+                        <span style="">手机扫码查看</span>
                     </div>
                 </div>
             @endif

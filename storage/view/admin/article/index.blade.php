@@ -85,11 +85,11 @@
                                             <td>{{ $item->created_at }}</td>
                                             <td>
                                                 <div class="tpl-table-black-operation">
-                                                    <a href="{{ '/article/' . '/' . $item->slug}}" target="_blank"
+                                                    <a href="{{ '/article?slug='. $item->slug}}" target="_blank"
                                                        style="border: 1px solid orange;color: orange;">
                                                         <i class="am-icon-eye"></i> 查看
                                                     </a>
-                                                    <a href="{{ '/admin/article/edit' . '/' . $item->id }}">
+                                                    <a href="{{ '/admin/article/edit?id=' . $item->id }}">
                                                         <i class="am-icon-pencil"></i> 编辑
                                                     </a>
                                                     <a href="javascript:;" onclick="destroy('{{ $item->id }}')"

@@ -19,6 +19,8 @@ use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
 use Hyperf\View\RenderInterface;
+use Hyperf\Di\Annotation\Inject;
+use Qbhy\HyperfAuth\AuthManager;
 
 /**
  * @Controller(prefix="/")
@@ -27,6 +29,13 @@ use Hyperf\View\RenderInterface;
  */
 class IndexController extends AbstractController
 {
+
+    /**
+     * @Inject
+     * @var AuthManager
+     */
+    protected $auth;
+
     /**
      * @GetMapping(path="/")
      * @return \Psr\Http\Message\ResponseInterface
@@ -54,11 +63,16 @@ class IndexController extends AbstractController
         if (empty($slug)) {
             throw new ValidateException('slug 参数为空');
         }
-        $article = Article::query()
-            ->where('slug', $slug)
-            ->where('status', 1)
-            ->firstOrFail();
+        $query = Article::query()
+            ->where('slug', $slug);
 
-        return $render->render('article', ['article' => $article]);
+        if ($this->auth->check()) {
+            $article = $query->firstOrFail();
+        } else {
+            $article = $query->where('status', 1)
+                ->firstOrFail();
+        }
+
+        return $render->render('article', ['article' => $article, 'auth' => $this->auth->check()]);
     }
 }

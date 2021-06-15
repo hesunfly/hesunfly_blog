@@ -35,12 +35,13 @@ class ArticleRequest extends FormRequest
                 ];
 
             case 'PUT':
+                $id = $this->input('id');
                 return [
-                    'title' => ['bail', 'required', 'string', Rule::unique('article')->ignore($this->id)],
+                    'title' => ['bail', 'required', 'string', Rule::unique('article')->ignore($id)],
                     'category_id' => ['bail', 'required', 'CheckArticleCategory'],
                     'description' => ['bail', 'required', 'string'],
-                    'slug' => [Rule::unique('article')->where(function ($query) {
-                        $query->where('id', $this->input('id'));
+                    'slug' => [Rule::unique('article')->where(function ($query) use ($id) {
+                        $query->where('id', $id);
                     })],
                     'status' => ['bail', 'required', Rule::in([-1, 1])],
                     'content' => ['bail', 'required', 'string'],

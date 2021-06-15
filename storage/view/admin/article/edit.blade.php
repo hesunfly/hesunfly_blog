@@ -63,12 +63,12 @@
                                     <div class="am-u-sm-9">
                                         <select class="am-form" name="category" id="category">
                                             <option value="">选择分类</option>
-                                            @foreach ($categories as $item)
+                                            @foreach ($category as $item)
                                                 @if ($item['id'] == $article->category_id)
                                                     <option value="{{ $item['id'] }}"
-                                                            selected>{{ $item['category_title'] }}</option>
+                                                            selected>{{ $item['title'] }}</option>
                                                 @else
-                                                    <option value="{{ $item['id'] }}">{{ $item['category_title'] }}</option>
+                                                    <option value="{{ $item['id'] }}">{{ $item['title'] }}</option>
                                                 @endif
                                             @endforeach
                                         </select>
@@ -157,7 +157,7 @@
                 '|', 'preview', 'side-by-side', 'fullscreen'],
         });
         inlineAttachment.editors.codemirror4.attach(simplemde.codemirror, {
-            uploadUrl: "{{ url('/admin/images/upload') }}",
+            uploadUrl: "/admin/upload/image",
             uploadFieldName: 'image',
             extraParams: {},
         });
@@ -221,8 +221,9 @@
             let status = $("input[name='status']:checked").val();
 
             axios.put(
-                "{{ url('/admin/articles/save') . '/' . $id }}",
+                "/admin/article/save",
                 {
+                    'id': {{ $article->id }},
                     'title': title,
                     'description': description,
                     'slug': slug,
@@ -235,11 +236,11 @@
                 layer.msg('修改成功！', {
                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                     }, function () {
-                        window.location = "{{ url('/admin/articles') }}";
+                        window.location = "/admin/article";
                     }
                 );
             }).catch(function (error) {
-                layer.msg('error！', {
+                layer.msg(error.request.responseText, {
                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                     }, function () {
                         return false;
