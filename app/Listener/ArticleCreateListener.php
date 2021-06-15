@@ -26,7 +26,7 @@ class ArticleCreateListener implements ListenerInterface
         //生成二维码
         $article = $event->article;
 
-        $url = env('APP_URL') . 'article?id=' . $article->id;
+        $url = env('APP_URL') . 'article?slug=' . $article->slug;
         $file_path = BASE_PATH . '/public/upload/' . 'qr_image' . '/' . date('Y') . '/';
         $file_name = 'article_qrcode_' . $article->id . '.png';
 

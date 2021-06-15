@@ -29,7 +29,7 @@ class Page extends Model
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $guarded = [];
     /**
      * The attributes that should be cast to native types.
      *

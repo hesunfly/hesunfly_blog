@@ -24,6 +24,7 @@ use Carbon\Carbon;
 use Hyperf\DbConnection\Db;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
+use Hyperf\HttpServer\Annotation\DeleteMapping;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
 use Hyperf\HttpServer\Annotation\PostMapping;
@@ -198,6 +199,14 @@ class ArticleController extends BaseController
         return $response->raw('success')->withStatus(200);
     }
 
+    /**
+     * @DeleteMapping(path="delete")
+     * @param RequestInterface $request
+     * @param ResponseInterface $response
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws \Exception
+     * function:
+     */
     public function delete(RequestInterface $request, ResponseInterface $response)
     {
         $id = $request->input('id');

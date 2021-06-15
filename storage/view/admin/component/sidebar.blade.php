@@ -21,7 +21,7 @@
             </a>
         </li>
         <li class="sidebar-nav-link">
-            <a href="/admin/pages" @if (mb_strstr($uri, '/admin/pages')) class="active" @endif>
+            <a href="/admin/page" @if (mb_strstr($uri, '/admin/page')) class="active" @endif>
                 <i class="am-icon-file-code-o sidebar-nav-link-logo"></i> 页面
             </a>
         </li>

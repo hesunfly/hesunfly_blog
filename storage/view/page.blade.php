@@ -1,6 +1,6 @@
 @component('component.head', ['title' => $page->title])
 @endcomponent
-@component('component.header', ['pages' => [], 'keyword' => ''])
+@component('component.header', ['pages' => make(\App\Service\PageService::class)->getPages(), 'keyword' => ''])
 @endcomponent
 <script src="/assets/admin/js/highlight.min.js"></script>
 <link rel="stylesheet" href="/assets/admin/css/github.min.css">
@@ -8,7 +8,7 @@
     <h1 class="mb-5 font-sans">{{ $page->title }}</h1>
 
     <div class="flex items-center text-sm text-light">
-        <span>{{ $page->publish_at }}</span>
+        <span>最后编辑于 {{ $page->created_at->toDateString() }} </span>
     </div>
 
     <div class="mt-5 leading-loose flex flex-col justify-center items-center post-body font-serif">

@@ -60,10 +60,10 @@
                     <div class="aCssParent">
 
                         <a href="/" class="no-underline hover:underline uppercase aCss">文章</a>
-                        {{--@foreach($pages as $item)
-                            <a href="{{ url('/pages') . '/' . $item->slug }}"
+                        @foreach($pages as $item)
+                            <a href="{{ '/page?slug=' . $item->slug }}"
                                class=" no-underline hover:underline uppercase aCss">{{ $item->title }}</a>
-                        @endforeach--}}
+                        @endforeach
                     </div>
                     <div class="divCss" style="">
                         <div class="border-t-2 md:border-t-0 md:border-l-2 border-off-white bg-white flex items-center md:justify-end w-full md:w-auto"

@@ -88,7 +88,6 @@
                                     </div>
                                 </div>
 
-
                                 <div class="am-form-group">
                                     <div class="am-u-sm-9 am-u-sm-push-3">
                                         <button type="button"
@@ -139,7 +138,7 @@
                 '|', 'preview', 'side-by-side', 'fullscreen'],
         });
         inlineAttachment.editors.codemirror4.attach(simplemde.codemirror, {
-            uploadUrl: "{{ url('/admin/images/upload') }}",
+            uploadUrl: "/admin/upload/image",
             uploadFieldName: 'image',
             extraParams: {},
         });
@@ -200,7 +199,7 @@
             let status = $("input[name='status']:checked").val();
 
             axios.put(
-                "{{ url('/admin/pages/save') . '/' . $id }}",
+                "{{ '/admin/page/save?id=' . $page->id }}",
                 {
                     'title': title,
                     'slug': slug,
@@ -213,11 +212,11 @@
                 layer.msg('修改成功！', {
                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                     }, function () {
-                        window.location = "{{ url('/admin/pages') }}";
+                        window.location = "/admin/page";
                     }
                 );
             }).catch(function (error) {
-                layer.msg('error！', {
+                layer.msg(error.request.responseText, {
                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                     }, function () {
                         return false;

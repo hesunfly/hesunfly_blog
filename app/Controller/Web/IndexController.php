@@ -16,9 +16,11 @@ use App\Event\ArticleShowEvent;
 use App\Exception\ValidateException;
 use App\Middleware\VisitRecordMiddleware;
 use App\Model\Article;
+use App\Model\Page;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
+use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\View\RenderInterface;
 use Hyperf\Di\Annotation\Inject;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -67,9 +69,9 @@ class IndexController extends AbstractController
      * @return \Psr\Http\Message\ResponseInterface
      *                                             function:
      */
-    public function show(RenderInterface $render)
+    public function show(RequestInterface $request, RenderInterface $render)
     {
-        $slug = $this->request->input('slug');
+        $slug = $request->input('slug');
         if (empty($slug)) {
             throw new ValidateException('slug 参数为空');
         }
@@ -93,6 +95,26 @@ class IndexController extends AbstractController
         }
 
         return $render->render('article', ['article' => $article, 'auth' => $this->auth->check()]);
+    }
+
+    /**
+     * @GetMapping(path="/page")
+     * function:
+     */
+    public function page(RequestInterface $request)
+    {
+        $slug = $request->input('slug');
+
+        if (empty($slug)) {
+            return abort(404);
+        }
+
+        $page = Page::query()
+            ->where('slug', $slug)
+            ->where('status', 1)
+            ->firstOrFail();
+
+        return view('page', ['page' => $page]);
     }
 
     /**

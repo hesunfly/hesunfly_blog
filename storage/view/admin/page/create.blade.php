@@ -125,7 +125,7 @@
                 '|', 'preview', 'side-by-side', 'fullscreen'],
         });
         inlineAttachment.editors.codemirror4.attach(simplemde.codemirror, {
-            uploadUrl: "{{ url('/admin/images/upload') }}",
+            uploadUrl: "/admin/upload/image",
             uploadFieldName: 'image',
             extraParams: {},
         });
@@ -186,7 +186,7 @@
             let status = $("input[name='status']:checked").val();
 
             axios.post(
-                "{{ url('/admin/pages/store') }}",
+                "/admin/page/store",
                 {
                     'title': title,
                     'slug': slug,
@@ -199,11 +199,11 @@
                 layer.msg('创建成功！', {
                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                     }, function () {
-                        window.location = "{{ url('/admin/pages') }}";
+                        window.location = "/admin/page";
                     }
                 );
             }).catch(function (error) {
-                layer.msg('error！', {
+                layer.msg(error.request.responseText, {
                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                     }, function () {
                         return false;

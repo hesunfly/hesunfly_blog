@@ -30,7 +30,7 @@
                                     <div class="am-btn-toolbar">
                                         <div class="am-btn-group am-btn-group-xs">
                                             <button type="button" class="am-btn am-btn-success am-round"
-                                                    onclick="location.href='{{ url('/admin/pages/create') }}'">
+                                                    onclick="location.href='/admin/page/create'">
                                                 <span class="am-icon-plus"></span> 新增
                                             </button>
                                         </div>
@@ -66,7 +66,7 @@
                                             <td>{{ $item->created_at->toDateString() }}</td>
                                             <td>
                                                 <div class="tpl-table-black-operation">
-                                                    <a href="{{ url('/admin/pages/edit') . '/' . $item->id }}">
+                                                    <a href="{{ '/admin/page/edit?id=' . $item->id }}">
                                                         <i class="am-icon-pencil"></i> 编辑
                                                     </a>
                                                     <a href="javascript:;" onclick="destroy({{ $item->id }})"
@@ -100,17 +100,17 @@
             title: '⚠️',
             btn: ['删除', '取消'] //按钮
         }, function () {
-            axios.delete("{{ url('/admin/pages/destroy') }}" + '/' + id)
+            axios.delete("/admin/page/delete?id="+ id)
                 .then(function (response) {
                     layer.msg('删除成功！', {
                             time: 1000 //2秒关闭（如果不配置，默认是3秒）
                         }, function () {
-                            window.location = "{{ url('/admin/pages/') }}";
+                            window.location = "/admin/page";
                         }
                     );
                 })
                 .catch(function (error) {
-                    layer.msg('error！', {
+                    layer.msg(error.request.responseText, {
                             time: 1000 //2秒关闭（如果不配置，默认是3秒）
                         }, function () {
                             return false;
