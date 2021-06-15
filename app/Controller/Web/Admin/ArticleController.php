@@ -179,9 +179,13 @@ class ArticleController extends BaseController
         $article = Article::query()->where('id', $params['id'])->firstOrFail();
         $publish_status = $params['status'];
 
-        if ($article->publish_status == -1 && $publish_status == 1) {
+        if ($article->status == -1 && $publish_status == 1) {
             $params['publish_at'] = Carbon::now();
-            $this->eventDispatcher->dispatch(new ArticlePublishEvent($article));
+            go(
+                function () use ($params) {
+                    $this->eventDispatcher->dispatch(new ArticlePublishEvent($params));
+                }
+            );
         }
 
         if ($article->category_id != $params['category_id']) {

@@ -40,9 +40,7 @@ class ArticleRequest extends FormRequest
                     'title' => ['bail', 'required', 'string', Rule::unique('article')->ignore($id)],
                     'category_id' => ['bail', 'required', 'CheckArticleCategory'],
                     'description' => ['bail', 'required', 'string'],
-                    'slug' => [Rule::unique('article')->where(function ($query) use ($id) {
-                        $query->where('id', $id);
-                    })],
+                    'slug' => [Rule::unique('article')->ignore($id)],
                     'status' => ['bail', 'required', Rule::in([-1, 1])],
                     'content' => ['bail', 'required', 'string'],
                     'html_content' => ['bail', 'required', 'string'],

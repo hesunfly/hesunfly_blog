@@ -40,7 +40,8 @@
         "hyperf/validation": "^2.1",
         "hyperf/view": "^2.1",
         "hyperf/view-engine": "^2.1",
-        "mobiledetect/mobiledetectlib": "^2.8"
+        "mobiledetect/mobiledetectlib": "^2.8",
+        "yurunsoft/phpmailer-swoole": "^1.0"
     },
     "require-dev": {
         "filp/whoops": "^2.12",
