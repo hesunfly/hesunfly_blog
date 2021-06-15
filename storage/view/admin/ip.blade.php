@@ -1,4 +1,4 @@
-@component('admin.component.head', ['title' => '访问 IP 列表'])
+@component('admin.component.head', ['title' => '访问记录列表'])
 @endcomponent
 
 <body data-type="widgets">
@@ -36,10 +36,10 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach ($ips as $item)
+                                    @foreach ($record as $item)
                                         <tr class="gradeX">
                                             <td>{{ $item->ip }}</td>
-                                            <td>{{ $item->address }}</td>
+                                            <td>{{ $item->address ?: '未知' }}</td>
                                             <td>{{ $item->uri }}</td>
                                             <td>{{ $item->created_at->toDatetimeString() }}</td>
                                         </tr>
@@ -51,16 +51,16 @@
 
                                 <div class="am-cf">
                                     <ul class="am-pagination am-pagination-centered">
-                                        @if ($ips->currentPage() != 1)
-                                            <li class=""><a href="{{ $ips->previousPageUrl() }}">«</a></li>
+                                        @if ($record->currentPage() != 1)
+                                            <li class=""><a href="{{ $record->previousPageUrl() }}">«</a></li>
                                         @endif
-                                        <li class="am-active"><a href="javascript:;">{{ $ips->currentPage() }}</a>
+                                        <li class="am-active"><a href="javascript:;">{{ $record->currentPage() }}</a>
                                         </li>
-                                        @if ($ips->lastPage() != $ips->currentPage())
-                                            <li><a href="{{ $ips->nextPageUrl() }}" style="margin-left: 5px;">»</a>
+                                        @if ($record->lastPage() != $record->currentPage())
+                                            <li><a href="{{ $record->nextPageUrl() }}" style="margin-left: 5px;">»</a>
                                             </li>
                                         @endif
-                                        <li> 共 {{ $ips->lastPage() }} 页</li>
+                                        <li> 共 {{ $record->lastPage() }} 页</li>
                                     </ul>
                                 </div>
                             </div>

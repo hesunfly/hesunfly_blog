@@ -33,7 +33,7 @@
             </a>
         </li>
         <li class="sidebar-nav-link">
-            <a href="/admin/ips" @if (mb_strstr($uri, '/admin/ips')) class="active" @endif>
+            <a href="/admin/common/visitRecord" @if (mb_strstr($uri, '/admin/common/visitRecord')) class="active" @endif>
                 <i class="am-icon-list sidebar-nav-link-logo"></i> 记录
             </a>
         </li>
