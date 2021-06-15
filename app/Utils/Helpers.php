@@ -189,7 +189,7 @@ function getEmail()
 
     $mail->CharSet = 'UTF-8';
     $mail->IsSMTP();
-    $mail->SMTPDebug = 1; // 关闭SMTP调试功能
+    $mail->SMTPDebug = 0; // 关闭SMTP调试功能
     $mail->SMTPAuth = true; // 启用 SMTP 验证功能
     $mail->SMTPSecure = env('MAIL_ENCRYPTION', 'ssl'); // 使用安全协议
     $mail->Host = env('MAIL_HOST'); // SMTP 服务器

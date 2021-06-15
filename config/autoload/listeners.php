@@ -14,4 +14,5 @@ return [
     \App\Listener\ArticleDeleteListener::class,
     \App\Listener\ArticlePublishListener::class,
     \App\Listener\ArticleCreateListener::class,
+    \App\Listener\ArticleShowListener::class,
 ];

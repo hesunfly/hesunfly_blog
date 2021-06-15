@@ -16,7 +16,7 @@
         "96qbhy/hyperf-auth": "^2.3",
         "endroid/qr-code": "^4.1",
         "hyperf-ext/hashing": "^2.1",
-        "hyperf/cache": "~2.1.0",
+        "hyperf/cache": "^2.1",
         "hyperf/command": "^2.1",
         "hyperf/config": "^2.1",
         "hyperf/crontab": "^2.1",

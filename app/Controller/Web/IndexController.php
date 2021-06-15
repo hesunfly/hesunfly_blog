@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace App\Controller\Web;
 
 use App\Controller\AbstractController;
+use App\Event\ArticleShowEvent;
 use App\Exception\ValidateException;
 use App\Middleware\VisitRecordMiddleware;
 use App\Model\Article;
@@ -20,6 +21,7 @@ use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
 use Hyperf\View\RenderInterface;
 use Hyperf\Di\Annotation\Inject;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Qbhy\HyperfAuth\AuthManager;
 
 use function Hyperf\ViewEngine\view;
@@ -31,6 +33,12 @@ use function Hyperf\ViewEngine\view;
  */
 class IndexController extends AbstractController
 {
+
+    /**
+     * @Inject
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
 
     /**
      * @Inject
@@ -73,6 +81,15 @@ class IndexController extends AbstractController
         } else {
             $article = $query->where('status', 1)
                 ->firstOrFail();
+        }
+
+        if ($article->status == 1) {
+            $article->visit_ip = get_client_ip();
+            go(
+                function () use ($article) {
+                    $this->eventDispatcher->dispatch(new ArticleShowEvent($article));
+                }
+            );
         }
 
         return $render->render('article', ['article' => $article, 'auth' => $this->auth->check()]);
