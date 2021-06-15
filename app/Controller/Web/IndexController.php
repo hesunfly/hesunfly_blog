@@ -22,6 +22,8 @@ use Hyperf\View\RenderInterface;
 use Hyperf\Di\Annotation\Inject;
 use Qbhy\HyperfAuth\AuthManager;
 
+use function Hyperf\ViewEngine\view;
+
 /**
  * @Controller(prefix="/")
  * @Middleware(VisitRecordMiddleware::class)
@@ -74,5 +76,15 @@ class IndexController extends AbstractController
         }
 
         return $render->render('article', ['article' => $article, 'auth' => $this->auth->check()]);
+    }
+
+    /**
+     * @GetMapping(path="/404")
+     * @return \Hyperf\ViewEngine\Contract\FactoryInterface|\Hyperf\ViewEngine\Contract\ViewInterface
+     * function:
+     */
+    public function errorNotFound()
+    {
+        return view('404');
     }
 }

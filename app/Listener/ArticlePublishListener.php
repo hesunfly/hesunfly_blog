@@ -17,7 +17,9 @@ class ArticlePublishListener implements ListenerInterface
 
     public function process(object $event)
     {
-        //生成二维码，发送订阅邮件
+        //发送订阅邮件
         $article = $event->article;
+
+
     }
 }

@@ -168,3 +168,12 @@ function isDesktop(): bool
 
     return ! $detect->isMobile() && ! $detect->isTablet();
 }
+
+
+function abort($code = 404)
+{
+    switch ($code) {
+        case 404:
+            return ApplicationContext::getContainer()->get(\Hyperf\HttpServer\Contract\ResponseInterface::class)->redirect('/404');
+    }
+}

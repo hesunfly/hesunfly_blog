@@ -189,8 +189,7 @@ class ArticleController extends BaseController
             Category::query()->where('id', $params['category_id'])->increment('count');
         }
 
-        $article = $article->update($params);
-        //文章编辑事件
+        $article->update($params);
 
         return $response->raw('success')->withStatus(200);
     }

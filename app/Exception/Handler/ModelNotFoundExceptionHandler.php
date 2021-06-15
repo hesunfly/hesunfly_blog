@@ -15,7 +15,7 @@ class ModelNotFoundExceptionHandler extends ExceptionHandler
     public function handle(Throwable $throwable, ResponseInterface $response)
     {
         $this->stopPropagation();
-        return ApplicationContext::getContainer()->get(\Hyperf\HttpServer\Contract\ResponseInterface::class)->raw('数据不存在！')->withStatus(404);
+        return abort(404);
     }
 
     public function isValid(Throwable $throwable): bool

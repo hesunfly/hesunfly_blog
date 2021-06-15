@@ -8,7 +8,7 @@
     <h1 class="mb-5 font-sans">{{ $article->title }}</h1>
 
     <div class="flex items-center text-sm text-light">
-        <span>{{ $article->publish_at }}</span>
+        <span>{{ $article->publish_at ?: '未发布' }}</span>
         <span style="margin-left: 1rem"><i class="fa fa-folder"></i> {{ $article->category->title }}</span>
         <span style="margin-left: 1rem"><i class="fa fa-eye"></i> {{ $article->view_count }}</span>
         @if ($auth)
