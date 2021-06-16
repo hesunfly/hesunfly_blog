@@ -38,7 +38,7 @@ Router::get(
     }
 );
 
-Route::get('/sync', function () {
+Router::get('/sync', function () {
     $articles = \App\Model\Article::query()->get()->toArray();
 
     foreach ($articles as $article) {
