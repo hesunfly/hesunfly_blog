@@ -122,7 +122,7 @@
             type: 'line',
             stack: '总量',
             areaStyle: { normal: {} },
-            data: JSON.parse("{{ $count }}"),
+            data: JSON.parse("{{ $statistics }}"),
             itemStyle: {
                 normal: {
                     color: '#1cabdb',
