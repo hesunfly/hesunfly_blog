@@ -37,8 +37,9 @@ class IndexController extends BaseController
      * @GetMapping(path="")
      * function:
      */
-    public function index()
+    public function index(RequestInterface $request)
     {
+        $year = $request->input('year', date('Y'));
         $parallel = new Parallel();
 
         $parallel->add(function () {
@@ -59,7 +60,17 @@ class IndexController extends BaseController
         });
 
         $parallel->add(function () {
-            $year = date('Y');
+            $years = Article::query()->distinct()->where('status', 1)->selectRaw('YEAR(publish_at) as year')->orderByDesc('year')->get()->toArray();
+
+            if (count($years) > 0) {
+                $years = array_column($years, 'year');
+            } else {
+                $years = [date('Y')];
+            }
+            return ['years' => $years];
+        });
+
+        $parallel->add(function () use ($year) {
             $sql = "select count(id) count,MONTH (publish_at) publish_at FROM article where YEAR (publish_at) = '{$year}' GROUP BY MONTH (publish_at) ORDER BY MONTH (publish_at) DESC";
             $res = Db::select($sql);
             $temp = [];
@@ -88,7 +99,6 @@ class IndexController extends BaseController
         } catch (ParallelExecutionException $exception) {
             throw new DbQueryException($exception->getMessage());
         }
-
         return view(
             'admin.index',
             [
@@ -96,6 +106,8 @@ class IndexController extends BaseController
                 'visit_count' => $arr['visit_count'],
                 'image_count' => $arr['image_count'],
                 'statistics' => $arr['statistics'],
+                'year' => $year,
+                'years' => $arr['years'],
             ]
         );
     }

@@ -76,10 +76,23 @@
                 <div class="am-u-sm-12 am-u-md-12">
                     <div class="widget am-cf">
                         <div class="widget-head am-cf">
-                            <div class="widget-title am-fl">{{ date('Y') . ' 年文章发布统计' }}</div>
+                            <div class="widget-title am-fl">{{ $year . ' 年文章发布统计' }}</div>
                             <div class="widget-function am-fr">
-                                <a href="javascript:;" class="am-icon-cog"></a>
+                                <div class="am-u-sm-12 am-u-md-6 am-u-lg-3">
+                                    <div class="am-form-group tpl-table-list-select">
+                                        <select data-am-selected="{btnSize: 'sm'}" id="year_select">
+
+                                            @foreach($years as $item)
+                                                <option value="{{ $item }}"
+                                                        @if ($year == $item) selected @endif>{{ $item }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
+
+
                         </div>
                         <div class="widget-body-md widget-body tpl-amendment-echarts am-fr" id="tpl-echarts">
 
@@ -94,6 +107,13 @@
 @component('admin.component.foot')
 @endcomponent
 <script>
+
+    $(function () {
+        $('#year_select').change(function () {
+            window.location.href = '/admin?year=' + $('#year_select').val();
+        });
+    });
+
     let eCharts = echarts.init(document.getElementById('tpl-echarts'));
     option = {
         tooltip: {
