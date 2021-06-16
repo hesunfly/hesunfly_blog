@@ -53,15 +53,28 @@ class IndexController extends AbstractController
      * @return \Psr\Http\Message\ResponseInterface
      *                                             function:
      */
-    public function index(RenderInterface $render)
+    public function index(RequestInterface $request, RenderInterface $render)
     {
+        $keyword = $request->input('keyword');
         $articles = Article::query()
             ->with('category')
             ->where('status', 1)
+            ->when(
+                $keyword,
+                function ($query, $keyword) {
+                    $query->where('title', 'like', "%{$keyword}%");
+                }
+            )
             ->orderByDesc('publish_at')
             ->paginate(config('app.page_size'));
 
-        return $render->render('index', ['articles' => $articles]);
+        return $render->render(
+            'index',
+            [
+                'articles' => $articles,
+                'keyword' => $keyword,
+            ]
+        );
     }
 
     /**

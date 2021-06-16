@@ -51,7 +51,7 @@
                             </div>
                             <div class="am-u-sm-12 am-u-md-12 am-u-lg-3">
                                 <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
-                                    <input type="text" class="am-form-field " id="keyword" value="{{ $keyword ?? ''}}">
+                                    <input type="text" class="am-form-field " id="keyword" placeholder="检索文章标题" value="{{ $keyword ?? ''}}">
                                     <span class="am-input-group-btn">
             <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search"
                     type="button" id="search"></button>

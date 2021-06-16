@@ -60,8 +60,9 @@ class ArticleController extends BaseController
     {
         $parallel = new Parallel();
         $category = $request->input('category');
+        $keyword = $request->input('keyword');
         $parallel->add(
-            function () use ($category) {
+            function () use ($category, $keyword) {
                 $articles = Article::query()
                     ->select('id', 'category_id', 'title', 'slug', 'status', 'view_count', 'publish_at', 'created_at')
                     ->with('category')
@@ -69,6 +70,12 @@ class ArticleController extends BaseController
                         $category,
                         function ($query, $category) {
                             $query->where('category_id', $category);
+                        }
+                    )
+                    ->when(
+                        $keyword,
+                        function ($query, $keyword) {
+                            $query->where('title', 'like', "%{$keyword}%");
                         }
                     )
                     ->orderByDesc('id')
@@ -96,7 +103,12 @@ class ArticleController extends BaseController
 
         return view(
             'admin.article.index',
-            ['articles' => $arr['articles'], 'categories' => $arr['category'], 'category_id' => $category]
+            [
+                'articles' => $arr['articles'],
+                'categories' => $arr['category'],
+                'category_id' => $category,
+                'keyword' => $keyword,
+            ]
         );
     }
 
