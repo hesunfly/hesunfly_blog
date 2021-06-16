@@ -28,6 +28,6 @@ Router::get(
         \App\Model\Config::query()->create(['id' => 1]);
 
         return \Hyperf\Utils\ApplicationContext::getContainer()
-            ->get(\Hyperf\HttpServer\Contract\ResponseInterface::class)->raw('初始化完成! email：admin@163.com  password: 123456');
+            ->get(\Hyperf\HttpServer\Contract\ResponseInterface::class)->raw('初始化完成! 后台账号密码为：email：admin@163.com  password: 123456');
     }
 );

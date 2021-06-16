@@ -73,7 +73,7 @@ class IndexController extends AbstractController
                 }
             )
             ->orderByDesc('publish_at')
-            ->paginate(make(CacheService::class)->getConfig('page_size'));
+            ->paginate((int)make(CacheService::class)->getConfig('page_size'));
 
         return $render->render(
             'index',
