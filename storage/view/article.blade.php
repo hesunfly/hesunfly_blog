@@ -13,7 +13,7 @@
         <span style="margin-left: 1rem"><i class="fa fa-eye"></i> {{ $article->view_count }}</span>
         @if ($auth)
             <span style="margin-left: 2rem">
-                <a href="{{ '/admin/articles/edit/?id=' . $article->id }}" target="_blank"
+                <a href="{{ '/admin/article/edit?id=' . $article->id }}" target="_blank"
                    style="text-decoration: none;">
                 编辑文章
                 </a>
