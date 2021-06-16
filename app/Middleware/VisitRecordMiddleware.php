@@ -34,14 +34,15 @@ class VisitRecordMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $uri = ApplicationContext::getContainer()->get(RequestInterface::class)->getRequestUri();
+        $uri_obj = ApplicationContext::getContainer()->get(RequestInterface::class)->getUri();
+        $uri = $uri_obj->getPath() . $uri_obj->getQuery() . $uri_obj->getFragment();
         $ip = get_client_ip();
         go(
             function () use ($uri, $ip) {
                 VisitRecord::query()->create(
                     [
                         'ip' => $ip,
-                        'uri' => $uri,
+                        'uri' => urldecode($uri),
                     ]
                 );
             }

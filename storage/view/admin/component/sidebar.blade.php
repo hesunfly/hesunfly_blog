@@ -28,7 +28,7 @@
 
         <li class="sidebar-nav-heading">资源</li>
         <li class="sidebar-nav-link">
-            <a href="/admin/images" @if (mb_strstr($uri, '/admin/images')) class="active" @endif>
+            <a href="/admin/image" @if (mb_strstr($uri, '/admin/image')) class="active" @endif>
                 <i class="am-icon-file-image-o sidebar-nav-link-logo"></i> 图片
             </a>
         </li>

@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace App\Controller\Web\Admin;
 
 use App\Model\Article;
+use App\Model\VisitRecord;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
@@ -36,6 +37,8 @@ class IndexController extends BaseController
         $article_count = Article::query()
             ->where('status', 1)->count();
 
-        return view('admin.index', ['article_count' => $article_count]);
+        $visit_count = VisitRecord::query()->count();
+
+        return view('admin.index', ['article_count' => $article_count, 'visit_count' => $visit_count]);
     }
 }
