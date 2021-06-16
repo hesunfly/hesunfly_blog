@@ -14,8 +14,10 @@ namespace App\Controller\Web\Admin;
 use App\Exception\ValidateException;
 use App\Model\Ad;
 use App\Model\Config;
+use App\Model\Subscribe;
 use App\Model\VisitRecord;
 use App\Request\AdRequest;
+use App\Request\SubscribeRequest;
 use App\Service\CacheService;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\DeleteMapping;
@@ -44,7 +46,7 @@ class CommonController extends BaseController
     {
         $record = VisitRecord::query()->orderByDesc('id')->paginate(make(CacheService::class)->getConfig('page_size'));
 
-        return view('admin.ip', ['record' => $record]);
+        return view('admin.visit_record', ['record' => $record]);
     }
 
     /**
@@ -179,5 +181,32 @@ class CommonController extends BaseController
         return $response->raw('success');
     }
 
+    /**
+     * @GetMapping(path="subscribeIndex")
+     * function:
+     */
+    public function subscribeIndex()
+    {
+        $subscribes = Subscribe::query()->paginate(make(CacheService::class)->getConfig('page_size'));
+        return view('admin.subscribes', ['subscribes' => $subscribes]);
+    }
 
+    /**
+     * @PutMapping(path="subscribeStatus")
+     * @param SubscribeRequest $request
+     * @param ResponseInterface $response
+     * @return \Psr\Http\Message\ResponseInterface
+     * function:
+     */
+    public function subscribeStatus(SubscribeRequest $request, ResponseInterface $response)
+    {
+        $status = $request->input('status');
+        $id = $request->input('id');
+
+        $sub = Subscribe::query()->where('id', $id)->firstOrFail();
+        $sub->status = $status;
+        $sub->save();
+
+        return $response->raw('success');
+    }
 }

@@ -80,10 +80,16 @@ class AuthController extends BaseController
      * @PutMapping(path="user/save")
      * function:
      */
-    public function save(RequestInterface $request)
+    public function save(RequestInterface $request, ResponseInterface $response)
     {
         $params = $request->all();
 
+        if ($params['password']) {
+            $params['password'] = Hash::make($params['password']);
+        }
+        User::query()->first()->update($params);
+
+        return $response->raw('success');
     }
 
     /**

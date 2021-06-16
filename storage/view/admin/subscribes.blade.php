@@ -48,11 +48,11 @@
                                                 @endif
                                             </td>
                                             <td>{{ $item->times }}</td>
-                                            <td>{{ $item->created_at->toDatetimeString() }}</td>
+                                            <td>{{ $item->created_at }}</td>
                                             <td>
                                                 <div class="tpl-table-black-operation">
                                                     @if ($item->status == 1)
-                                                        <a href="javascript:;" onclick="setStatus({{ $item->id }}, 0)">
+                                                        <a href="javascript:;" onclick="setStatus({{ $item->id }}, -1)">
                                                             <i class="am-icon-pencil"></i> 忽略
                                                         </a>
                                                     @else
@@ -60,10 +60,6 @@
                                                             <i class="am-icon-pencil"></i> 启用
                                                         </a>
                                                     @endif
-                                                    <a href="javascript:;" onclick="destroy({{ $item->id }})"
-                                                       class="tpl-table-black-operation-del">
-                                                        <i class="am-icon-trash"></i> 删除
-                                                    </a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -110,41 +106,11 @@
         });
     });
 
-    //删除
-    function destroy(id) {
-        if (!id) {
-            return false;
-        }
-
-        layer.confirm('确定删除吗？', {
-            title: '⚠️',
-            btn: ['删除', '取消'] //按钮
-        }, function () {
-            axios.delete("{{ url('/admin/subscribes/destroy') }}" + '/' + id)
-                .then(function (response) {
-                    layer.msg('删除成功！', {
-                            time: 1000 //2秒关闭（如果不配置，默认是3秒）
-                        }, function () {
-                            window.location.reload();
-                        }
-                    );
-                })
-                .catch(function (error) {
-                    layer.msg('error！', {
-                            time: 1000 //2秒关闭（如果不配置，默认是3秒）
-                        }, function () {
-                            return false;
-                        }
-                    );
-                });
-        });
-    }
-
     function setStatus(id, status) {
         if (!id) {
             return false;
         }
-        axios.put("{{ url('/admin/subscribes/setStatus') }}" + '/' + id, {
+        axios.put("/admin/common/subscribeStatus?id=" + id, {
             status
         }).then(function (response) {
                 layer.msg('更新成功！', {

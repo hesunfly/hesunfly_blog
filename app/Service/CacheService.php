@@ -71,23 +71,6 @@ class CacheService extends Service
         }
     }
 
-    public $avatar_key = 'config_avatar';
-
-    public function setAvatar($value)
-    {
-        Cache::forever(self::$avatar_key, $value);
-    }
-
-    public function getAvatar()
-    {
-        $config = Cache::get(self::$avatar_key);
-        if (empty($config)) {
-            $config = '/assets/images/avatar.jpg';
-        }
-
-        return $config;
-    }
-
     public function getAds()
     {
         $ads = $this->cache->get('index_ads');

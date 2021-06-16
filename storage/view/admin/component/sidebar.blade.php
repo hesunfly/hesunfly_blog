@@ -39,7 +39,7 @@
         </li>
 
         <li class="sidebar-nav-link">
-            <a href="/admin/common/subscribe'" @if (mb_strstr($uri, '/admin/common/subscribe')) class="active" @endif>
+            <a href="/admin/common/subscribeIndex" @if (mb_strstr($uri, '/admin/common/subscribeIndex')) class="active" @endif>
                 <i class="am-icon-feed sidebar-nav-link-logo"></i> 订阅
             </a>
         </li>

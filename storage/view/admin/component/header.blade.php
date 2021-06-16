@@ -1,7 +1,7 @@
 <header>
     <!-- logo -->
     <div class="am-fl tpl-header-logo">
-        <a href="/admin"><img src="/assets/images/Hesunfly-Blog-Logo.png" alt="" style="height: 55px;width: auto;"></a>
+        <a href="/admin"><img src="{{ make(\App\Service\CacheService::class)->getConfig('logo_img') }}" alt="" style="height: 55px;width: auto;"></a>
     </div>
     <!-- 右侧内容 -->
     <div class="tpl-header-fluid">
@@ -16,7 +16,7 @@
             <ul>
                 <li class="am-text-sm">
                     <div class="tpl-user-panel-profile-picture">
-                        <img src="/assets/images/avatar.jpg" alt="" class="am-img-bdrs" >
+                        <img src="{{ make(\Qbhy\HyperfAuth\AuthManager::class)->user()->avatar }}" alt="" class="am-img-bdrs" >
                     </div>
                 </li>
                 <li class="am-text-sm">

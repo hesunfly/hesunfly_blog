@@ -68,7 +68,7 @@ class UploadController extends BaseController
      */
     public function index()
     {
-        $images = Image::query()->paginate(make(CacheService::class)->getConfig('page_size'));
+        $images = Image::query()->orderByDesc('id')->paginate(make(CacheService::class)->getConfig('page_size'));
 
         return view('admin.image.index', ['images' => $images]);
     }

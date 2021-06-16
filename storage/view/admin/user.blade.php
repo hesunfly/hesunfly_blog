@@ -34,7 +34,7 @@
                                                 class="tpl-form-line-small-title">Name</span></label>
                                     <div class="am-u-sm-9">
                                         <input type="text" class="tpl-form-input" id="user_name"
-                                               name="user_name" required  placeholder="请输入用户名"
+                                               name="user_name" required placeholder="请输入用户名"
                                                value="{{ $user->user_name }}">
                                     </div>
                                 </div>
@@ -46,17 +46,17 @@
                                                 class="tpl-form-line-small-title">Email</span></label>
                                     <div class="am-u-sm-9">
                                         <input type="email" class="tpl-form-input" id="email"
-                                               name="email" required  placeholder="请输入邮箱"
+                                               name="email" required placeholder="请输入邮箱"
                                                value="{{ $user->email }}">
                                     </div>
                                 </div>
 
                                 <div class="am-form-group">
-                                    <label for="password" class="am-u-sm-3 am-form-label">密码  <span
+                                    <label for="password" class="am-u-sm-3 am-form-label">密码 <span
                                                 class="tpl-form-line-small-title">Password</span></label>
                                     <div class="am-u-sm-9">
                                         <input type="password" class="tpl-form-input" id="password"
-                                               name="password"  placeholder="请输入密码"
+                                               name="password" placeholder="请输入密码"
                                                value="">
                                     </div>
                                 </div>
@@ -66,7 +66,7 @@
                                                 class="tpl-form-line-small-title">Password</span></label>
                                     <div class="am-u-sm-9">
                                         <input type="password" class="tpl-form-input" id="re_password"
-                                               name="re_password"   placeholder="请输入密码"
+                                               name="re_password" placeholder="请输入密码"
                                                value="">
                                     </div>
                                 </div>
@@ -76,7 +76,7 @@
                                                 class="tpl-form-line-small-title">Avatar</span></label>
                                     <div class="am-u-sm-9">
                                         <input type="text" class="tpl-form-input" id="avatar"
-                                               name="avatar"  placeholder="将图片上传至图片管理，复制图片地址到这里即可"
+                                               name="avatar" placeholder="将图片上传至图片管理，复制图片地址到这里即可"
                                                value="{{ $user->avatar }}">
                                     </div>
                                 </div>
@@ -98,13 +98,13 @@
 </div>
 @component('admin.component.foot')
 @endcomponent
-
+<script src="/assets/base64-min.js"></script>
 
 <script>
 
     $(function () {
         $('#submit').click(function () {
-            let name = $('#name').val();
+            let name = $('#user_name').val();
             if (name.length === 0) {
                 layer.msg('Name 为必填项！', {
                         time: 2000 //2秒关闭（如果不配置，默认是3秒）
@@ -125,51 +125,59 @@
             }
 
             let password = $('#password').val();
-            let pass_len = password.length;
-            if (pass_len !== 0 && pass_len < 6) {
-                layer.msg('Password 格式错误！', {
-                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
-                    }, function () {
-                    }
-                );
-                return;
+            if (password) {
+                let pass_len = password.length;
+                if (pass_len !== 0 && pass_len < 6) {
+                    layer.msg('Password 格式错误！', {
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        }, function () {
+                        }
+                    );
+                    return;
+                }
             }
 
+
             let re_password = $('#re_password').val();
-            if (pass_len !== 0 && re_password !== password) {
-                layer.msg('两次输入的密码不一致！', {
-                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
-                    }, function () {
-                    }
-                );
-                return;
+            if (re_password) {
+                if (re_password !== password) {
+                    layer.msg('两次输入的密码不一致！', {
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        }, function () {
+                        }
+                    );
+                    return;
+                }
             }
+
 
             let avatar = $('#avatar').val();
 
+            let data = {
+                'user_name': name,
+                'email': email,
+                'avatar': avatar,
+            };
+
+            if (password) {
+                data["password"] = encryptObj.base64encode(password)
+            }
             axios.put(
                 "/auth/user/save",
-                {
-                    'name': name,
-                    'email': email,
-                    'password': password,
-                    'avatar': avatar,
-                }
+                data
             ).then(function (response) {
                 layer.msg('修改成功！', {
                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                     }, function () {
-                        if (response.status === 201) {
-                            axios.delete("/auth/logout'").then(function (response) {
-                                layer.msg('请重新登录！', {
-                                    }, function () {
-                                        window.location = "auth/login";
+                        if (response.status === 200) {
+                            axios.delete("/auth/logout").then(function (response) {
+                                layer.msg('请重新登录！', {}, function () {
+                                        window.location = "/auth/login";
                                     }
                                 );
                             });
                         }
                     }
-
                 );
             }).catch(function (error) {
                 layer.msg(error.request.responseText, {

@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace App\Controller\Web\Admin;
 
 use App\Model\Article;
+use App\Model\Image;
 use App\Model\VisitRecord;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
@@ -39,6 +40,15 @@ class IndexController extends BaseController
 
         $visit_count = VisitRecord::query()->count();
 
-        return view('admin.index', ['article_count' => $article_count, 'visit_count' => $visit_count]);
+        $image_count = Image::query()->count();
+
+        return view(
+            'admin.index',
+            [
+                'article_count' => $article_count,
+                'visit_count' => $visit_count,
+                'image_count' => $image_count,
+            ]
+        );
     }
 }

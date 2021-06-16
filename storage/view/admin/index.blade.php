@@ -50,7 +50,7 @@
                         </div>
                         <div class="widget-statistic-body">
                             <div class="widget-statistic-value">
-{{--                                {{ \App\Models\Image::count() }}--}}
+                                {{ $image_count }}
                             </div>
 
                             <span class="widget-statistic-icon am-icon-file-image-o"></span>
