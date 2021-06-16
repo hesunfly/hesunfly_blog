@@ -166,7 +166,7 @@ function getRedis()
 function isDesktop(): bool
 {
     $detect = new Mobile_Detect();
-
+    var_dump($detect->isMobile(), $detect->isTablet());
     return ! $detect->isMobile() && ! $detect->isTablet();
 }
 
