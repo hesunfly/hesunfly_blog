@@ -11,13 +11,17 @@ declare(strict_types=1);
  */
 namespace App\Controller\Web\Admin;
 
+use App\Model\Image;
 use App\Request\UploadImageRequest;
 use Hyperf\HttpServer\Annotation\Controller;
+use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
 use Hyperf\HttpServer\Annotation\PostMapping;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 use Hyperf\Utils\Str;
 use Qbhy\HyperfAuth\AuthMiddleware;
+
+use function Hyperf\ViewEngine\view;
 
 /**
  * @Controller(prefix="admin/upload")
@@ -34,17 +38,37 @@ class UploadController extends BaseController
     public function image(UploadImageRequest $request, ResponseInterface $response, \League\Flysystem\Filesystem $filesystem): \Psr\Http\Message\ResponseInterface
     {
         $image = $request->file('image');
-
-        $stream = fopen($image->getRealPath(), 'r+');
-
         $extension = strtolower($image->getExtension());
         $filename = 'hesunfly-blog' . '-' . time() . '-' . Str::random(10) . '.' . $extension;
         $filePath = 'upload/' . 'image' . '/' . date('Y-m') . '/';
-        $filesystem->writeStream($filePath . $filename, $stream);
-        fclose($stream);
-
         $access_path = '/' . $filePath . $filename;
 
+        go(function () use ($image, $filesystem, $filename, $filePath, $access_path) {
+            $stream = fopen($image->getRealPath(), 'r+');
+            $filesystem->writeStream($filePath . $filename, $stream);
+            fclose($stream);
+            Image::query()->create(
+                [
+                    'name' => $filename,
+                    'disk' => 'local',
+                    'size' => $image->getSize(),
+                    'path' => $access_path,
+                ]
+            );
+        });
+
         return $response->json(['url' => $access_path]);
+    }
+
+    /**
+     * @GetMapping("/admin/image")
+     * @return \Hyperf\ViewEngine\Contract\FactoryInterface|\Hyperf\ViewEngine\Contract\ViewInterface
+     * function:
+     */
+    public function index()
+    {
+        $images = Image::query()->paginate(config('app.page_size'));
+
+        return view('admin.image.index', ['images' => $images]);
     }
 }

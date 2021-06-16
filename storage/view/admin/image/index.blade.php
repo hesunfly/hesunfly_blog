@@ -121,7 +121,7 @@
         swf: '/assets/webuploader/Uploader.swf',
 
         // 文件接收服务端。
-        server: "{{ url('/admin/images/upload') }}",
+        server: "/admin/upload/image",
 
         // 选择文件的按钮。可选。
         // 内部根据当前运行是创建，可能是input元素，也可能是flash.
@@ -218,7 +218,7 @@
             title: '⚠️',
             btn: ['删除', '取消'] //按钮
         }, function () {
-            axios.delete("{{ url('/admin/images/destroy') }}" + '/' + id)
+            axios.delete("/admin/image/delete?id=" + id)
                 .then(function (response) {
                     layer.msg('删除成功！', {
                             icon: 1,
@@ -229,7 +229,7 @@
                     );
                 })
                 .catch(function (error) {
-                    layer.msg('error！', {
+                    layer.msg(error.request.responseText, {
                             icon: 2,
                             time: 1000 //2秒关闭（如果不配置，默认是3秒）
                         }, function () {

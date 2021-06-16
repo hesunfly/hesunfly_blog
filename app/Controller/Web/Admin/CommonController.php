@@ -72,7 +72,9 @@ class CommonController extends BaseController
     {
         $params = $request->all();
 
-        Ad::query()->create($params);
+        go(function () use ($params) {
+            Ad::query()->create($params);
+        });
 
         return $response->raw('success')->withStatus(201);
     }

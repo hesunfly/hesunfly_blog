@@ -57,7 +57,7 @@
                                             <td>{{ $item->desc }}</td>
                                             <td width="30"><a href="{{ $item->url }}" target="_blank">{{ $item->url }}</a></td>
                                             <td>
-                                                <img src="{{ $item->img_path }}" alt="" style="width: 150px;height: 70px;">
+                                                <img src="{{ $item->image_path }}" alt="" style="width: 150px;height: 70px;">
                                             </td>
                                             <td>
                                                 @if ($item->status == 1)
