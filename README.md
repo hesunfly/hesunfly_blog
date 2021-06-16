@@ -51,3 +51,5 @@ php bin/hyperf.php migrate
 
 至此, 安装完成 ^_^。
 
+登录后台后，可以在配置栏填写适用您的信息。
+
