@@ -1,7 +1,7 @@
 @component('component.head', ['title' => config('app.blog_name')])
 @endcomponent
 
-@component('component.header', ['pages' => make(\App\Service\PageService::class)->getPages(), 'keyword' => $keyword ?: ''])
+@component('component.header', ['keyword' => $keyword ?: ''])
 @endcomponent
 
 <div class="container mx-auto px-5 lg:max-w-screen-sm" style="padding-bottom: 100px;">

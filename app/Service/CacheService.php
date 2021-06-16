@@ -11,7 +11,7 @@ use Hyperf\Di\Annotation\Inject;
 
 //use App\Models\Setting;
 
-class PageService extends Service
+class CacheService extends Service
 {
     protected $cache;
 

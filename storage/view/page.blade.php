@@ -1,6 +1,6 @@
 @component('component.head', ['title' => $page->title])
 @endcomponent
-@component('component.header', ['pages' => make(\App\Service\PageService::class)->getPages(), 'keyword' => ''])
+@component('component.header', ['keyword' => ''])
 @endcomponent
 <script src="/assets/admin/js/highlight.min.js"></script>
 <link rel="stylesheet" href="/assets/admin/css/github.min.css">
