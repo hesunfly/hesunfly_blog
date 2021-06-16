@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service;
 
 //use App\Models\Ad;
+use App\Model\Ad;
 use App\Model\Page;
 use Hyperf\Cache\Cache;
 use Hyperf\Di\Annotation\Inject;
@@ -85,22 +86,28 @@ class CacheService extends Service
 
         return $config;
     }
+    */
 
-    public static function getAds()
+    public function getAds()
     {
-        $ads = Cache::get('index_ads');
+        $ads = $this->cache->get('index_ads');
 
-        if (empty($ads)) {
-            $ads = Ad::whereRaw('status = 1')->select(['desc', 'url', 'img_path'])->orderBy('sort')->get();
+        if ($ads) {
+            return unserialize($ads);
         }
 
-        Cache::forever('index_ads', $ads);
+        $ads = Ad::query()
+            ->where('status', 1)
+            ->select(['desc', 'url', 'image_path'])
+            ->orderBy('sort')->get();
+
+        $this->cache->set('index_ads', serialize($ads));
 
         return $ads;
     }
 
-    public static function deleteAds()
+    public function deleteAds()
     {
-        Cache::forget('index_ads');
-    }*/
+        $this->cache->delete('index_ads');
+    }
 }

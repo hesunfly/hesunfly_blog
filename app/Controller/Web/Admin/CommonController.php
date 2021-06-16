@@ -15,6 +15,7 @@ use App\Exception\ValidateException;
 use App\Model\Ad;
 use App\Model\VisitRecord;
 use App\Request\AdRequest;
+use App\Service\CacheService;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\DeleteMapping;
 use Hyperf\HttpServer\Annotation\GetMapping;
@@ -74,6 +75,7 @@ class CommonController extends BaseController
 
         go(function () use ($params) {
             Ad::query()->create($params);
+            make(CacheService::class)->deleteAds();
         });
 
         return $response->raw('success')->withStatus(201);
@@ -107,6 +109,8 @@ class CommonController extends BaseController
 
         $ad->update($params);
 
+        make(CacheService::class)->deleteAds();
+
         return $response->raw('success')->withStatus(200);
     }
 
@@ -124,6 +128,8 @@ class CommonController extends BaseController
         $ad = Ad::query()->where('id', $id)->firstOrFail();
 
         $ad->delete();
+
+        make(CacheService::class)->deleteAds();
 
         return $response->raw('success')->withStatus(204);
     }

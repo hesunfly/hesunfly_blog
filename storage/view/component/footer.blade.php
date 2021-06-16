@@ -10,17 +10,17 @@
             <div class="text-muted py-4 text-center">
                 @if (isDesktop())
                     <div style="margin-bottom: 25px;">
-                        {{--@if (count($ads = \App\Services\CacheService::getAds()) > 0)
+                        @if (count($ads = make(\App\Service\CacheService::class)->getAds()) > 0)
                             @foreach($ads as $item)
                             <div style="display: inline-block;">
                                 <a target="_blank" style="display: inline-block;" href="{{ $item->url }}">
-                                    <img src="{{ $item->img_path }}" style="width: 150px;height: 70px;" alt="" />
+                                    <img src="{{ $item->image_path }}" style="width: 150px;height: 70px;" alt="" />
                                     <br>
                                     <span style="font-size: 0.7rem;margin-bottom: 0.5rem;">{{ $item->desc }}</span>
                                 </a>
                             </div>
                             @endforeach
-                            @endif--}}
+                            @endif
                     </div>
                 @endif
 
