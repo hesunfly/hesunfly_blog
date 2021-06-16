@@ -51,7 +51,7 @@
                         style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; padding: 25px 0; text-align: center;">
                         <a href="{{ env('APP_URL') }}"
                            style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; color: #bbbfc3; font-size: 19px; font-weight: bold; text-decoration: none; text-shadow: 0 1px 0 white;">
-                            {{ env('APP_NAME') }}
+                            {{ make(\App\Service\CacheService::class)->getConfig('blog_name') }}
                         </a>
                     </td>
                 </tr>
@@ -67,7 +67,7 @@
                                 <td class="content-cell"
                                     style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; padding: 35px 0;">
                                     <h2 style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; color: #2F3133; font-size: 16px; font-weight: bold; margin-top: 0; text-align: center;margin: 5rem 0;">
-                                        您好，这里是 <a style="color: #2F3133;text-decoration: none;" href="{{ url('/') }}">Hesunfly Blog</a>，为了避免订阅泛滥，需要您进行订阅确认，点击下面的按钮进行确认。</h2>
+                                        您好，这里是 <a style="color: #2F3133;text-decoration: none;" href="{{ env('APP_URL') }}">{{ make(\App\Service\CacheService::class)->getConfig('blog_name') }}</a>，为了避免订阅泛滥，需要您进行订阅确认，点击下面的按钮进行确认。</h2>
                                     <table class="action" align="center" width="100%" cellpadding="0" cellspacing="0"
                                            style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; margin: 30px auto; padding: 0; text-align: center; width: 100%; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 100%;">
                                         <tr>
@@ -82,7 +82,7 @@
                                                                    style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box;">
                                                                 <tr>
                                                                     <td style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box;">
-                                                                        <a href="{{ url('/subscribes/confirm/') . '/' . encrypt($data['email']) . '/' . encrypt($data['key']) . '/' . encrypt($data['code']) }}"
+                                                                        <a href="{{ env('APP_URL') . 'subscribe/confirm' . '?email='. $data['email'] . '&key=' . $data['key'] . '&code=' . $data['code'] }}"
                                                                            class="button button-blue" target="_blank"
                                                                            style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; border-radius: 3px; box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16); color: #FFF; display: inline-block; text-decoration: none; -webkit-text-size-adjust: none; background-color: #3097D1; border-top: 10px solid #3097D1; border-right: 18px solid #3097D1; border-bottom: 10px solid #3097D1; border-left: 18px solid #3097D1;">订阅确认</a>
                                                                     </td>
@@ -97,9 +97,7 @@
 
                                     <p style="margin-top:5rem;font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; color: #74787E; font-size: 16px; line-height: 1.5em;text-align: center;">
                                         Thanks,<br>
-                                        Hesunfly Blog</p>
-
-
+                                        {{ make(\App\Service\CacheService::class)->getConfig('blog_name') }}</p>
                                 </td>
                             </tr>
                         </table>

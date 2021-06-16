@@ -22,9 +22,35 @@ class SubscribeRequest extends FormRequest
      */
     public function rules(): array
     {
+        switch ($this->getMethod()) {
+            case 'PUT':
+                return [
+                    'status' => ['bail', 'required', Rule::in([-1, 1])],
+                    'id' => ['required'],
+                ];
+            case 'POST':
+                return [
+                    'email' => [
+                        'bail',
+                        'required',
+                        'email',
+                        'unique:subscribe,email'
+                    ]
+                ];
+            case 'GET':
+                return [
+                    'email' => ['bail', 'required', 'email'],
+                    'key' => ['required'],
+                    'code' => ['required'],
+                ];
+        }
+    }
+
+    public function messages(): array
+    {
         return [
-            'status' => ['bail', 'required', Rule::in([-1, 1])],
-            'id' => ['required'],
+            'email.email' => '请输入正确的邮箱地址！',
+            'email.unique' => '您已订阅，请勿重复订阅！',
         ];
     }
 }

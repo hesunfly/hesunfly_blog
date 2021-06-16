@@ -15,7 +15,7 @@ class CreateSubscribeTable extends Migration
             $table->bigIncrements('id');
             $table->string('email')->default('');
             $table->unsignedInteger('times')->default(0);
-            $table->tinyInteger('status')->default(1);
+            $table->tinyInteger('status')->default(-1);
             $table->timestamps();
             $table->softDeletes();
             $table->index('email');

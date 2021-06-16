@@ -12,15 +12,15 @@
                     <div style="margin-bottom: 25px;">
                         @if (count($ads = make(\App\Service\CacheService::class)->getAds()) > 0)
                             @foreach($ads as $item)
-                            <div style="display: inline-block;">
-                                <a target="_blank" style="display: inline-block;" href="{{ $item->url }}">
-                                    <img src="{{ $item->image_path }}" style="width: 150px;height: 70px;" alt="" />
-                                    <br>
-                                    <span style="font-size: 0.7rem;margin-bottom: 0.5rem;">{{ $item->desc }}</span>
-                                </a>
-                            </div>
+                                <div style="display: inline-block;">
+                                    <a target="_blank" style="display: inline-block;" href="{{ $item->url }}">
+                                        <img src="{{ $item->image_path }}" style="width: 150px;height: 70px;" alt=""/>
+                                        <br>
+                                        <span style="font-size: 0.7rem;margin-bottom: 0.5rem;">{{ $item->desc }}</span>
+                                    </a>
+                                </div>
                             @endforeach
-                            @endif
+                        @endif
                     </div>
                 @endif
 
@@ -61,14 +61,8 @@
                 return false;
             }
 
-            let reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$"); //正则表达式
-
-            if (!reg.test(email)) {
-                layer.msg('请输入正确的邮箱地址');
-            }
-
             axios.post(
-                "/subscribes",
+                "/subscribe",
                 {
                     'email': email,
                 }
@@ -79,22 +73,12 @@
                     }
                 );
             }).catch(function (error) {
-                if (error.request.status === 422) {
-                    let msg = JSON.parse(error.request.responseText);
-                    layer.msg(msg.errors.email[0], {
-                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
-                        }, function () {
-                        }
-                    );
-                    return false;
-                }
-
-                layer.msg('error! ', {
+                layer.msg(error.request.responseText, {
                         time: 2000 //2秒关闭（如果不配置，默认是3秒）
                     }, function () {
-
                     }
                 );
+                return false;
             });
         });
     });

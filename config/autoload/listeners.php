@@ -15,4 +15,5 @@ return [
     \App\Listener\ArticlePublishListener::class,
     \App\Listener\ArticleCreateListener::class,
     \App\Listener\ArticleShowListener::class,
+    \App\Listener\UserSubscribeListener::class,
 ];

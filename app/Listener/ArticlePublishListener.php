@@ -7,9 +7,6 @@ use App\Model\Subscribe;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Event\Contract\ListenerInterface;
 use Hyperf\View\RenderInterface;
-use PHPMailer\PHPMailer\PHPMailer;
-
-use function Hyperf\ViewEngine\view;
 
 class ArticlePublishListener implements ListenerInterface
 {
