@@ -62,8 +62,9 @@ class ArticleController extends BaseController
         $parallel = new Parallel();
         $category = $request->input('category');
         $keyword = $request->input('keyword');
+        $page = (int)$request->input('page', 1);
         $parallel->add(
-            function () use ($category, $keyword) {
+            function () use ($page, $category, $keyword) {
                 $articles = Article::query()
                     ->select('id', 'category_id', 'title', 'slug', 'status', 'view_count', 'publish_at', 'created_at')
                     ->with('category')
@@ -80,7 +81,7 @@ class ArticleController extends BaseController
                         }
                     )
                     ->orderByDesc('id')
-                    ->paginate(make(CacheService::class)->getConfig('page_size'));
+                    ->paginate(make(CacheService::class)->getConfig('page_size'), ['*'], 'page', $page);
 
                 return ['articles' => $articles];
             }
