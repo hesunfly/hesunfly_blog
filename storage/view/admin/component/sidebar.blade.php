@@ -39,19 +39,19 @@
         </li>
 
         <li class="sidebar-nav-link">
-            <a href="/admin/subscribes'" @if (mb_strstr($uri, '/admin/subscribes')) class="active" @endif>
+            <a href="/admin/common/subscribe'" @if (mb_strstr($uri, '/admin/common/subscribe')) class="active" @endif>
                 <i class="am-icon-feed sidebar-nav-link-logo"></i> 订阅
             </a>
         </li>
 
         <li class="sidebar-nav-heading">应用</li>
         <li class="sidebar-nav-link">
-            <a href="/admin/settings" @if (mb_strstr($uri, '/admin/settings')) class="active" @endif>
+            <a href="/admin/common/config" @if (mb_strstr($uri, '/admin/common/config')) class="active" @endif>
                 <i class="am-icon-cog sidebar-nav-link-logo"></i> 配置
             </a>
         </li>
         <li class="sidebar-nav-link">
-            <a href="/admin/ads" @if (mb_strstr($uri, '/admin/ads')) class="active" @endif>
+            <a href="/admin/common/adIndex" @if (mb_strstr($uri, '/admin/common/adIndex')) class="active" @endif>
                 <i class="am-icon-bullhorn sidebar-nav-link-logo"></i> 推广
             </a>
         </li>

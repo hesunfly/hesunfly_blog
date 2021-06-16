@@ -148,8 +148,8 @@
                 return;
             }
 
-            let img_path = $('#img_path').val();
-            if (img_path.length === 0) {
+            let image_path = $('#img_path').val();
+            if (image_path.length === 0) {
                 layer.msg('Image Path 为必填项！', {
                         time: 2000 //2秒关闭（如果不配置，默认是3秒）
                     }, function () {
@@ -161,19 +161,19 @@
             let status = $("input[name='status']:checked").val();
 
             axios.post(
-                "{{ url('/admin/ads/store') }}",
+                "/admin/common/adStore",
                 {
-                    desc,url,sort,img_path,status,
+                    desc,url,sort,image_path,status,
                 }
             ).then(function (response) {
                 layer.msg('创建成功！', {
                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                     }, function () {
-                        window.location = "{{ url('/admin/ads') }}";
+                        window.location = "/admin/common/adIndex";
                     }
                 );
             }).catch(function (error) {
-                layer.msg('error！', {
+                layer.msg(error.request.responseText, {
                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                     }, function () {
                         return false;

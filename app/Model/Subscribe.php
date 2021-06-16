@@ -3,6 +3,7 @@
 declare (strict_types=1);
 namespace App\Model;
 
+use Hyperf\Database\Model\SoftDeletes;
 use Hyperf\DbConnection\Model\Model;
 /**
  * @property int $id 
@@ -15,6 +16,7 @@ use Hyperf\DbConnection\Model\Model;
  */
 class Subscribe extends Model
 {
+    use SoftDeletes;
     /**
      * The table associated with the model.
      *
@@ -26,7 +28,7 @@ class Subscribe extends Model
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $guarded = [];
     /**
      * The attributes that should be cast to native types.
      *

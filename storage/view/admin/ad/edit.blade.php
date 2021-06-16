@@ -1,4 +1,4 @@
-@component('admin.component.head', ['title' => '推广编辑'])
+@component('admin.component.head', ['title' => '推广'])
 @endcomponent
 <link rel="stylesheet" href="/assets/admin/css/simplemde.min.css">
 <body data-type="widgets">
@@ -64,8 +64,8 @@
                                                 class="tpl-form-line-small-title">Image Path</span></label>
                                     <div class="am-u-sm-9">
                                         <input type="text" style="width: 79%;display: inline-block;margin-top: 40px;" class="tpl-form-input" id="img_path" name="img_path"
-                                            value="{{ $ad->img_path }}"   placeholder="可将图片由图片管理上传，复制地址粘贴即可">
-                                        <img src="{{ $ad->img_path }}" alt="图片预览" id="img_path_src" style="width: 20%;height: 70px;" />
+                                            value="{{ $ad->image_path }}"   placeholder="可将图片由图片管理上传，复制地址粘贴即可">
+                                        <img src="{{ $ad->image_path }}" alt="图片预览" id="img_path_src" style="width: 20%;height: 70px;" />
                                     </div>
                                 </div>
 
@@ -116,7 +116,7 @@
 <script>
     $(function () {
 
-        $('#img_path').bind("input propertychange",function(event){
+        $('#img_path').bind("input propertychange", function (event) {
             let src = $(this).val();
             let src_el = $('#img_path_src');
             if (src.length > 0) {
@@ -158,8 +158,8 @@
                 return;
             }
 
-            let img_path = $('#img_path').val();
-            if (img_path.length === 0) {
+            let image_path = $('#img_path').val();
+            if (image_path.length === 0) {
                 layer.msg('Image Path 为必填项！', {
                         time: 2000 //2秒关闭（如果不配置，默认是3秒）
                     }, function () {
@@ -170,20 +170,21 @@
 
             let status = $("input[name='status']:checked").val();
 
+            let id = {{ $ad->id }}
             axios.put(
-                "{{ url('/admin/ads/save') . '/' . $id }}",
+                "/admin/common/adSave",
                 {
-                    desc,url,sort,img_path,status,
+                    id, desc, url, sort, image_path, status,
                 }
             ).then(function (response) {
                 layer.msg('修改成功！', {
                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                     }, function () {
-                        window.location = "{{ url('/admin/ads') }}";
+                        window.location = "/admin/common/adIndex";
                     }
                 );
             }).catch(function (error) {
-                layer.msg('error！', {
+                layer.msg(error.request.responseText, {
                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                     }, function () {
                         return false;
