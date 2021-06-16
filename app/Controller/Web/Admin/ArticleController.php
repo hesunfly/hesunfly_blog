@@ -20,6 +20,7 @@ use App\Exception\ValidateException;
 use App\Model\Article;
 use App\Model\Category;
 use App\Request\ArticleRequest;
+use App\Service\CacheService;
 use Carbon\Carbon;
 use Hyperf\DbConnection\Db;
 use Hyperf\Di\Annotation\Inject;
@@ -79,7 +80,7 @@ class ArticleController extends BaseController
                         }
                     )
                     ->orderByDesc('id')
-                    ->paginate(10);
+                    ->paginate(make(CacheService::class)->getConfig('page_size'));
 
                 return ['articles' => $articles];
             }

@@ -6,6 +6,7 @@ namespace App\Service;
 
 //use App\Models\Ad;
 use App\Model\Ad;
+use App\Model\Config;
 use App\Model\Page;
 use Hyperf\Cache\Cache;
 use Hyperf\Di\Annotation\Inject;
@@ -45,39 +46,39 @@ class CacheService extends Service
         $this->cache->delete('index_pages_items');
     }
 
-    /*public static function getConfig($key)
+    public function getConfig($key)
     {
         $cache_key = 'config_' . $key;
-        $config = Cache::get($cache_key);
+        $config = $this->cache->get($cache_key);
 
-        if (empty($config)) {
-            $db_config = Setting::select($key)->first();
-            $config = Setting::$setting_title[$key]['default'];
-            if (!empty($db_config->$key)) {
-                $config = $db_config->$key;
-            }
+        if ($config) {
+            return $config;
         }
 
-        Cache::forever($cache_key, $config);
+        $config = Config::$setting_title[$key]['default'];
+        $db_config = Config::value($key);
+        $config = $db_config ?: $config;
+
+        $this->cache->set($cache_key, $config);
 
         return $config;
     }
 
-    public static function destroyConfig()
+    public function deleteConfig()
     {
-        foreach (array_keys(Setting::$setting_title) as $item) {
-            Cache::forget('config_' . $item);
+        foreach (array_keys(Config::$setting_title) as $item) {
+            $this->cache->delete('config_' . $item);
         }
     }
 
-    public static $avatar_key = 'config_avatar';
+    public $avatar_key = 'config_avatar';
 
-    public static function setAvatar($value)
+    public function setAvatar($value)
     {
         Cache::forever(self::$avatar_key, $value);
     }
 
-    public static function getAvatar()
+    public function getAvatar()
     {
         $config = Cache::get(self::$avatar_key);
         if (empty($config)) {
@@ -86,7 +87,6 @@ class CacheService extends Service
 
         return $config;
     }
-    */
 
     public function getAds()
     {

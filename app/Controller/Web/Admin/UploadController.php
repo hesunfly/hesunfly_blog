@@ -13,6 +13,7 @@ namespace App\Controller\Web\Admin;
 
 use App\Model\Image;
 use App\Request\UploadImageRequest;
+use App\Service\CacheService;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
@@ -67,7 +68,7 @@ class UploadController extends BaseController
      */
     public function index()
     {
-        $images = Image::query()->paginate(config('app.page_size'));
+        $images = Image::query()->paginate(make(CacheService::class)->getConfig('page_size'));
 
         return view('admin.image.index', ['images' => $images]);
     }

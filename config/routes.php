@@ -19,10 +19,14 @@ Router::get(
     function () {
         \App\Model\User::create(
             [
-                'user_name' => 'Hesunfly',
-                'email' => 'hesunfly@163.com',
+                'user_name' => 'admin',
+                'email' => 'admin@163.com',
                 'password' => \HyperfExt\Hashing\Hash::make('MTIzNDU2'),
             ]
         );
+
+        \App\Model\Config::query()->create(['id' => 1]);
+
+        return '初始化完成! email：admin@163.com  password: 123456';
     }
 );

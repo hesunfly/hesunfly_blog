@@ -1,6 +1,6 @@
 @component('component.head', ['title' => $article->title])
 @endcomponent
-@component('component.header', ['keyword' => $keyword ?: ''])
+@component('component.header', ['keyword' => $keyword ?? ''])
 @endcomponent
 <script src="/assets/admin/js/highlight.min.js"></script>
 <link rel="stylesheet" href="/assets/admin/css/github.min.css">
@@ -39,9 +39,9 @@
         @endif
         <div STYLE="text-align: center;display: inline-block;">
             <div style="margin-left: auto;margin-right: auto;display: inline-block;">
-                <img src="{{ config('app.reward_code') }}" alt="赞赏码" title="微信扫码赞赏"
+                <img src="{{ make(\App\Service\CacheService::class)->getConfig('reward_code_img') }}" alt="赞赏码" title="微信扫码赞赏"
                      style="display: block;width: 170px;height: 170px;margin-bottom: 15px;">
-                <span style="">{{ config('app.reward_desc') }}</span>
+                <span style="">{{ make(\App\Service\CacheService::class)->getConfig('reward_desc')}}</span>
             </div>
         </div>
     </div>

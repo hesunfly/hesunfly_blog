@@ -27,7 +27,7 @@
                         <div class="widget-body am-fr">
 
                             <form class="am-form tpl-form-line-form" id="setting_form">
-                                @foreach($settings as $item)
+                                @foreach($config as $item)
                                 <div class="am-form-group">
                                     <label for="{{ $item['name'] }}" class="am-u-sm-3 am-form-label">{{ $item['title'] }} <small><span
                                                     style="color: red;">*</span></small>
@@ -71,8 +71,8 @@
                 data[this.name] = this.value;
             });
 
-            axios.post(
-                "{{ url('/admin/settings/save')}}",
+            axios.put(
+                "/admin/common/configSave",
                 data
             ).then(function (response) {
                 layer.msg('保存成功！', {
@@ -81,18 +81,12 @@
                     }
                 );
             }).catch(function (error) {
-                layer.msg('error！', {
+                layer.msg(error.request.responseText, {
                         time: 1000 //2秒关闭（如果不配置，默认是3秒）
                     }, function () {
                         return false;
                     }
                 );
-                if (error.request.status === 422) {
-                    let msg = JSON.parse(error.request.responseText);
-                    let errors = msg.errors;
-                    let length = errors.length;
-                    // if (errors.email[0]);
-                }
             });
         });
     });

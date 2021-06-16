@@ -15,6 +15,7 @@ use App\Exception\ValidateException;
 use App\Model\Article;
 use App\Model\Page;
 use App\Request\PageRequest;
+use App\Service\CacheService;
 use Carbon\Carbon;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\DeleteMapping;
@@ -43,7 +44,7 @@ class PageController extends BaseController
      */
     public function index()
     {
-        $pages = Page::query()->paginate(config('app.page_size'));
+        $pages = Page::query()->paginate(make(CacheService::class)->getConfig('page_size'));
 
         return view(
             'admin.page.index',

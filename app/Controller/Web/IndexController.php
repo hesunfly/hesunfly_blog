@@ -17,6 +17,7 @@ use App\Exception\ValidateException;
 use App\Middleware\VisitRecordMiddleware;
 use App\Model\Article;
 use App\Model\Page;
+use App\Service\CacheService;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
@@ -66,7 +67,7 @@ class IndexController extends AbstractController
                 }
             )
             ->orderByDesc('publish_at')
-            ->paginate(config('app.page_size'));
+            ->paginate(make(CacheService::class)->getConfig('page_size'));
 
         return $render->render(
             'index',

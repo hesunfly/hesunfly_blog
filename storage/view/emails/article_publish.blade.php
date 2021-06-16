@@ -49,9 +49,9 @@
                 <tr>
                     <td class="header"
                         style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; padding: 25px 0; text-align: center;">
-                        <a href="{{ config('app.url') }}"
+                        <a href="{{ env('APP_URL') }}"
                            style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; color: #bbbfc3; font-size: 19px; font-weight: bold; text-decoration: none; text-shadow: 0 1px 0 white;">
-                            {{ config('app.blog_name') }}
+                            {{ make(\App\Service\CacheService::class)->getConfig('blog_name') }}
                         </a>
                     </td>
                 </tr>
@@ -67,8 +67,8 @@
                                 <td class="content-cell"
                                     style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; padding: 35px 0;">
                                     <h2 style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; color: #2F3133; font-size: 16px; font-weight: bold; margin-top: 0; text-align: center;margin: 5rem 0;">
-                                        您好，这里是 <a style="color: #2F3133;text-decoration: none;" href="{{ config('app.url') }}">Hesunfly Blog</a>，感谢您订阅我的博客！我刚刚发布了一篇新文章，快来看看吧！</h2>
-                                    <pre style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box;text-align: center;margin: 5rem 0;"><code style="font-size: 20px;font-weight: bold;text-align: center;"><a style="color: #2F3133;text-decoration: none;" href="{{ config('app.url') . 'article?slug=' . $article['slug'] }}">{{ "<< " . $article['title'] . " >>" }}</a></code></pre>
+                                        您好，这里是 <a style="color: #2F3133;text-decoration: none;" href="{{ env('APP_URL') }}">Hesunfly Blog</a>，感谢您订阅我的博客！我刚刚发布了一篇新文章，快来看看吧！</h2>
+                                    <pre style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box;text-align: center;margin: 5rem 0;"><code style="font-size: 20px;font-weight: bold;text-align: center;"><a style="color: #2F3133;text-decoration: none;" href="{{ env('APP_URL') . 'article?slug=' . $article['slug'] }}">{{ "<< " . $article['title'] . " >>" }}</a></code></pre>
                                     <table class="action" align="center" width="100%" cellpadding="0" cellspacing="0"
                                            style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; margin: 30px auto; padding: 0; text-align: center; width: 100%; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 100%;">
                                         <tr>
@@ -83,7 +83,7 @@
                                                                    style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box;">
                                                                 <tr>
                                                                     <td style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box;">
-                                                                        <a href="{{ config('app.url') . 'article?slug=' . $article['slug'] }}"
+                                                                        <a href="{{ env('APP_URL') . 'article?slug=' . $article['slug'] }}"
                                                                            class="button button-blue" target="_blank"
                                                                            style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; border-radius: 3px; box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16); color: #FFF; display: inline-block; text-decoration: none; -webkit-text-size-adjust: none; background-color: #3097D1; border-top: 10px solid #3097D1; border-right: 18px solid #3097D1; border-bottom: 10px solid #3097D1; border-left: 18px solid #3097D1;">阅读文章</a>
                                                                     </td>

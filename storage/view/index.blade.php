@@ -1,4 +1,4 @@
-@component('component.head', ['title' => config('app.blog_name')])
+@component('component.head', ['title' => make(\App\Service\CacheService::class)->getConfig('blog_name')])
 @endcomponent
 
 @component('component.header', ['keyword' => $keyword ?: ''])

@@ -52,8 +52,8 @@
 <header class="mb-10">
     <div class="container mx-auto px-5 lg:max-w-screen">
         <div class="flex items-center flex-col lg:flex-row">
-            <a href="{{ config('app.url') }}" class="flex items-center no-underline text-brand">
-                <img src="{{ config('app.blog_logo') }}" class="w-16" style="margin-top:1rem">
+            <a href="{{ env('APP_URL') }}" class="flex items-center no-underline text-brand">
+                <img src="{{ make(\App\Service\CacheService::class)->getConfig('logo_img') }}" class="w-16" style="margin-top:1rem">
             </a>
             <div class="lg:ml-auto mt-5 lg:mt-0 flex items-center" style="font-size: 1.3rem;">
                 <div style="">

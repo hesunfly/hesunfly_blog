@@ -13,6 +13,7 @@ namespace App\Controller\Web\Admin;
 
 use App\Exception\ValidateException;
 use App\Model\Ad;
+use App\Model\Config;
 use App\Model\VisitRecord;
 use App\Request\AdRequest;
 use App\Service\CacheService;
@@ -41,7 +42,7 @@ class CommonController extends BaseController
      */
     public function visitRecord()
     {
-        $record = VisitRecord::query()->orderByDesc('id')->paginate(config('app.page_size'));
+        $record = VisitRecord::query()->orderByDesc('id')->paginate(make(CacheService::class)->getConfig('page_size'));
 
         return view('admin.ip', ['record' => $record]);
     }
@@ -133,5 +134,50 @@ class CommonController extends BaseController
 
         return $response->raw('success')->withStatus(204);
     }
+
+    /**
+     * @GetMapping(path="configIndex")
+     * @return \Hyperf\ViewEngine\Contract\FactoryInterface|\Hyperf\ViewEngine\Contract\ViewInterface
+     * function:
+     */
+    public function configIndex()
+    {
+        $config = Config::query()->first()->toArray();
+
+        $config_fmt = [];
+        foreach ($config as $k => $item) {
+            $config_fmt[] = [
+                'name' => $k,
+                'value' => $item,
+                'title' => Config::$setting_title[$k]['title'],
+                'en_title' => Config::$setting_title[$k]['en_title']
+            ];
+        }
+
+        return view('admin.config')->with(['config' => $config_fmt]);
+    }
+
+    /**
+     * @PutMapping(path="configSave")
+     * @param RequestInterface $request
+     * @param ResponseInterface $response
+     * @return \Psr\Http\Message\ResponseInterface
+     * function:
+     */
+    public function configSave(RequestInterface $request, ResponseInterface $response)
+    {
+        $request_data = $request->all();
+
+        foreach ($request_data as $k => $item) {
+            $request_data[$k] = empty($item) ? '' : $item;
+        }
+
+        Config::first()->update($request_data);
+
+        make(CacheService::class)->deleteConfig();
+
+        return $response->raw('success');
+    }
+
 
 }

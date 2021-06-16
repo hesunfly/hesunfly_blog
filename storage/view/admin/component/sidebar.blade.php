@@ -46,7 +46,7 @@
 
         <li class="sidebar-nav-heading">应用</li>
         <li class="sidebar-nav-link">
-            <a href="/admin/common/config" @if (mb_strstr($uri, '/admin/common/config')) class="active" @endif>
+            <a href="/admin/common/configIndex" @if (mb_strstr($uri, '/admin/common/configIndex')) class="active" @endif>
                 <i class="am-icon-cog sidebar-nav-link-logo"></i> 配置
             </a>
         </li>
