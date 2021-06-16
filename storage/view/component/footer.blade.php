@@ -49,6 +49,7 @@
         </div>
     </div>
 </footer>
+<script src="/js/openUrlNewTab.js"></script>
 
 <script>
     $(function () {

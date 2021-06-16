@@ -1,7 +1,7 @@
 <header>
     <!-- logo -->
     <div class="am-fl tpl-header-logo">
-        <a href="/admin/"><img src="/assets/images/Hesunfly-Blog-Logo.png" alt="" style="height: 55px;width: auto;"></a>
+        <a href="/admin"><img src="/assets/images/Hesunfly-Blog-Logo.png" alt="" style="height: 55px;width: auto;"></a>
     </div>
     <!-- 右侧内容 -->
     <div class="tpl-header-fluid">
