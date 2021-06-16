@@ -166,8 +166,11 @@ function getRedis()
 function isDesktop(): bool
 {
     $detect = new Mobile_Detect();
-    var_dump($detect->isMobile(), $detect->isTablet());
-    return ! $detect->isMobile() && ! $detect->isTablet();
+
+    $request = ApplicationContext::getContainer()->get(\Hyperf\HttpServer\Contract\RequestInterface::class);
+    $ua = $request->getHeaderLine('User-Agent');
+    $headers =  $request->getHeaders();
+    return ! $detect->isMobile($ua,$headers) && ! $detect->isTablet($ua,$headers);
 }
 
 
