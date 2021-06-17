@@ -5,6 +5,7 @@ namespace App\Listener;
 use App\Event\UserSubscribeEvent;
 use App\Model\EmailConfirmCode;
 use App\Model\Subscribe;
+use App\Service\EmailService;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Event\Contract\ListenerInterface;
 use Hyperf\View\RenderInterface;
@@ -29,7 +30,7 @@ class UserSubscribeListener implements ListenerInterface
         //发送订阅邮件
         $email = $event->email;
 
-        $mail = getEmail();
+        $mail = make(EmailService::class)->getEmail();
 
         $mail->Subject = '博客订阅确认验证码！';
 

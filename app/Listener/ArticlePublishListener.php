@@ -4,6 +4,7 @@ namespace App\Listener;
 
 use App\Event\ArticlePublishEvent;
 use App\Model\Subscribe;
+use App\Service\EmailService;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\Event\Contract\ListenerInterface;
 use Hyperf\View\RenderInterface;
@@ -28,20 +29,22 @@ class ArticlePublishListener implements ListenerInterface
         //发送订阅邮件
         $article = $event->article;
 
-        $mail = getEmail();
-
-        $mail->Subject = '新文章发布了！';
-
-        $view = make(RenderInterface::class)->getContents('emails.article_publish', ['article' => $article]);
-
-        $mail->MsgHTML($view);
-
         $sub = Subscribe::query()->where('status', 1)->pluck('email')->toArray();
 
-        if (count($sub) > 0) {
-            foreach ($sub as $item) {
-                $mail->AddAddress($item); // 收件人
-            }
+        if (count($sub) == 0) {
+            return false;
+        }
+
+        $mail = make(EmailService::class)->getEmail();
+
+        $view = make(RenderInterface::class)
+            ->getContents('emails.article_publish', ['article' => $article]);
+
+        $mail->Subject = '新文章发布了！';
+        $mail->MsgHTML($view);
+
+        foreach ($sub as $item) {
+            $mail->AddAddress($item); // 收件人
         }
 
         $result = $mail->Send();
