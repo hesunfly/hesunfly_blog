@@ -13,7 +13,7 @@ use Hyperf\View\Mode;
 
 return [
     'engine' => \Hyperf\ViewEngine\HyperfViewEngine::class,
-    'mode' => Mode::SYNC,
+    'mode' => Mode::TASK,
     'config' => [
         'view_path' => BASE_PATH . '/storage/view/',
         'cache_path' => BASE_PATH . '/runtime/view/',
