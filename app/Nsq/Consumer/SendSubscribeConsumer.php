@@ -1,38 +1,46 @@
 <?php
 
-namespace App\Listener;
+declare(strict_types=1);
 
-use App\Event\ArticlePublishEvent;
+namespace App\Nsq\Consumer;
+
 use App\Model\Subscribe;
 use App\Service\EmailService;
-use App\Service\NsqService;
-use Hyperf\Event\Contract\ListenerInterface;
+use Hyperf\Contract\StdoutLoggerInterface;
+use Hyperf\Nsq\AbstractConsumer;
+use Hyperf\Nsq\Annotation\Consumer;
+use Hyperf\Nsq\Message;
 use Hyperf\Nsq\Result;
 use Hyperf\View\RenderInterface;
 
-class ArticlePublishListener implements ListenerInterface
+/**
+ * 接收需要发送订阅邮件验证
+ * @Consumer(topic="hesunfly_blog_sendSubscribe", channel="sendSubscribe", name ="SendSubscribeConsumer", nums=1)
+ */
+class SendSubscribeConsumer extends AbstractConsumer
 {
-    public function listen(): array
+    /**
+     * @var StdoutLoggerInterface
+     */
+    protected $logger;
+
+    public function isEnable(): bool
     {
-        return [
-            ArticlePublishEvent::class,
-        ];
+        return true;
     }
 
-    public function process(object $event)
+    public function consume(Message $payload): ?string
     {
-        //发送订阅邮件
-        $article = $event->article;
+        $article = unserialize($payload->getBody());
 
-        if (env("NSQ_ENABLE")) {
-            make(NsqService::class)->push('hesunfly_blog_sendSubscribe', $article);
-            return true;
+        if (! $article) {
+            return Result::ACK;
         }
 
         $sub = Subscribe::query()->where('status', 1)->pluck('email')->toArray();
 
         if (count($sub) == 0) {
-            return false;
+            return Result::ACK;
         }
 
         $mail = make(EmailService::class)->getEmail();
@@ -53,5 +61,7 @@ class ArticlePublishListener implements ListenerInterface
             $error = $mail->ErrorInfo;
             $this->logger->warning('订阅邮箱发送失败，错误信息:' . $error);
         }
+
+        return Result::ACK;
     }
 }

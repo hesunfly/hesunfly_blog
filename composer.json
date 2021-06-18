@@ -30,6 +30,7 @@
         "hyperf/http-server": "~2.1.0",
         "hyperf/logger": "^2.1",
         "hyperf/memory": "~2.1.0",
+        "hyperf/nsq": "^2.1",
         "hyperf/paginator": "^2.1",
         "hyperf/pool": "^2.1",
         "hyperf/process": "~2.1.0",
