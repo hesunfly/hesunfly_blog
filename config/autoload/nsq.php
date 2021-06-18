@@ -11,7 +11,7 @@ declare(strict_types=1);
  */
 return [
     'default' => [
-        'enable' => env("NSQ_ENABLE"),
+        'enable' => env("NSQ_ENABLE", false),
         'host' => '127.0.0.1',
         'port' => 4150,
         'pool' => [
