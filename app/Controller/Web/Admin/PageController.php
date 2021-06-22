@@ -67,7 +67,10 @@ class PageController extends BaseController
      */
     public function store(PageRequest $request, ResponseInterface $response)
     {
-        Page::query()->create($request->all());
+        $params = $request->all();
+        Page::query()->create($params);
+
+        saveSysOperationLog('页面模块', '创建页面', '创建了页面，页面标题: ' . $params['title'], $request);
 
         return $response->raw('success')->withStatus(201);
     }
@@ -98,6 +101,8 @@ class PageController extends BaseController
         $page = Page::query()->where('id', $params['id'])->firstOrFail();
         $page->update($params);
 
+        saveSysOperationLog('页面模块', '编辑页面', '编辑了页面，页面标题: ' . $params['title'], $request);
+
         return $response->raw('success')->withStatus(200);
     }
 
@@ -119,6 +124,8 @@ class PageController extends BaseController
 
         $page = Page::query()->where('id', $id)->firstOrFail();
         $page->delete();
+
+        saveSysOperationLog('页面模块', '删除页面', '删除了页面，页面标题: ' . $page->title, $request);
 
         return $response->raw('success')->withStatus(204);
     }

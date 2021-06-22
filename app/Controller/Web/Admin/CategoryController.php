@@ -23,7 +23,9 @@ use Hyperf\HttpServer\Annotation\PostMapping;
 use Hyperf\HttpServer\Annotation\PutMapping;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
+use Hyperf\Utils\Context;
 use Qbhy\HyperfAuth\AuthMiddleware;
+
 use function Hyperf\ViewEngine\view;
 
 /**
@@ -59,12 +61,10 @@ class CategoryController extends BaseController
     public function store(CategoryRequest $request, ResponseInterface $response)
     {
         $params = $request->all();
+        $category = Category::query()->create(['title' => $params['title']]);
 
-        go(
-            function () use ($params) {
-                Category::query()->create(['title' => $params['title']]);
-            }
-        );
+        Context::set('source_id', $category->id);
+        saveSysOperationLog('分类模块', '创建分类', '创建了分类，分类标题: ' . $params['title']);
 
         return $response->raw('success');
     }
@@ -77,7 +77,7 @@ class CategoryController extends BaseController
     {
         $id = $request->input('id');
 
-        if (! $id) {
+        if (!$id) {
             throw new ValidateException('id 参数不存在！');
         }
 
@@ -94,12 +94,16 @@ class CategoryController extends BaseController
         $params = $request->all();
 
         $category = Category::query()->where('id', $params['id'])->firstOrFail();
+        $old_title = $category->title;
 
         go(
             function () use ($category, $params) {
                 $category->update(['title' => $params['title']]);
             }
         );
+
+        Context::set('source_id', $params['id']);
+        saveSysOperationLog('分类模块', '编辑分类', '编辑了分类，原分类标题: ' . $old_title . ', 修改后标题：' . $params['title']);
 
         return $response->raw('success');
     }
@@ -112,7 +116,7 @@ class CategoryController extends BaseController
     {
         $id = $request->input('id');
 
-        if (! $id) {
+        if (!$id) {
             throw new ValidateException('id 参数为空');
         }
 
@@ -122,8 +126,12 @@ class CategoryController extends BaseController
         if ($has > 0) {
             return $response->raw('当前分类存在文章，不可删除')->withStatus(403);
         }
+        $title = $category->title;
 
         $category->delete();
+
+        Context::set('source_id', $id);
+        saveSysOperationLog('分类模块', '删除分类', '删除了分类，分类标题: ' . $title);
 
         return $response->raw('success')->withStatus(204);
     }

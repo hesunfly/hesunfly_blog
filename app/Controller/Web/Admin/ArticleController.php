@@ -32,17 +32,20 @@ use Hyperf\HttpServer\Annotation\PostMapping;
 use Hyperf\HttpServer\Annotation\PutMapping;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
+use Hyperf\Utils\Context;
 use Hyperf\Utils\Exception\ParallelExecutionException;
 use Hyperf\Utils\Parallel;
 use Hyperf\Utils\Str;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Qbhy\HyperfAuth\AuthMiddleware;
+use App\Middleware\AssignAuthInfoMiddleware;
 
 use function Hyperf\ViewEngine\view;
 
 /**
  * @Controller(prefix="admin/article")
  * @Middleware(AuthMiddleware::class)
+ * @Middleware(AssignAuthInfoMiddleware::class)
  * Class IndexController
  */
 class ArticleController extends BaseController
@@ -162,6 +165,10 @@ class ArticleController extends BaseController
             );
         }
 
+        var_dump($article->id);
+        Context::set('source_id', $article->id);
+        saveSysOperationLog('文章模块', '创建文章', '创建了新文章，文章标题: ' . $params['title']);
+
         return $response->raw('success')->withStatus(201);
     }
 
@@ -210,6 +217,9 @@ class ArticleController extends BaseController
 
         $article->update($params);
 
+        Context::set('source_id', $params['id']);
+        saveSysOperationLog('文章模块', '编辑文章', '编辑了文章，文章标题: ' . $params['title']);
+
         return $response->raw('success')->withStatus(200);
     }
 
@@ -230,11 +240,15 @@ class ArticleController extends BaseController
         }
 
         $article = Article::query()->where('id', $id)->firstOrFail();
+        $title = $article->title;
         $category_id = $article->category_id;
         $article->delete();
 
         //相关分类文章数减一
         $this->eventDispatcher->dispatch(new ArticleDeleteEvent($category_id));
+
+        Context::set('source_id', $id);
+        saveSysOperationLog('文章模块', '删除文章', '删除了文章，文章标题: ' . $title);
 
         return $response->raw('success');
     }

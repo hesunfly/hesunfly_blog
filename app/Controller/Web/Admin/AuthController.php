@@ -21,6 +21,7 @@ use Hyperf\HttpServer\Annotation\PostMapping;
 use Hyperf\HttpServer\Annotation\PutMapping;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
+use Hyperf\Utils\Context;
 use HyperfExt\Hashing\Hash;
 use Qbhy\HyperfAuth\Annotation\Auth;
 
@@ -54,15 +55,21 @@ class AuthController extends BaseController
 
         $user = User::query()->where('email', $params['name'])->first();
 
-        if (! $user) {
+        if (!$user) {
+            saveSysOperationLog('账户认证', '登录', '使用账户密码登录系统, 账户不存在，账号：' . $params['name']);
             throw new UnauthorizedHttpException('账户不存在！', -1);
         }
 
-        if (! Hash::check($params['password'], $user['password'])) {
+        if (!Hash::check($params['password'], $user['password'])) {
+            saveSysOperationLog('账户认证', '登录', '使用账户密码登录系统, 账号或密码错误, 账号：' . $params['name']);
             throw new UnauthorizedHttpException('账号或密码错误！', -1);
         }
 
         $this->auth->login($user);
+
+        Context::set('source_id', $user->id);
+        saveSysOperationLog('账户认证', '登录', '使用账户密码登录系统，账号：' . $user['email']);
+
         return $response->raw('success');
     }
 
@@ -87,7 +94,11 @@ class AuthController extends BaseController
         if ($params['password']) {
             $params['password'] = Hash::make($params['password']);
         }
-        User::query()->first()->update($params);
+        $user = User::query()->firstOrFail();
+        $user->update($params);
+
+        Context::set('source_id', $user->id);
+        saveSysOperationLog('账户认证', '修改个人信息', '修改了个人的用户信息, 账号：' . $user->email);
 
         return $response->raw('success');
     }
@@ -99,7 +110,11 @@ class AuthController extends BaseController
      */
     public function logout(ResponseInterface $response)
     {
+        Context::set('source_id', $this->auth->user()->id);
+        $email = $this->auth->user()->email;
         $this->auth->logout();
+
+        saveSysOperationLog('账户认证', '注销登录', '账户注销登录, 账号:' . $email);
 
         return $response->raw('success')->withStatus(204);
     }

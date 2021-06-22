@@ -19,6 +19,7 @@ use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
 use Hyperf\HttpServer\Annotation\PostMapping;
 use Hyperf\HttpServer\Contract\ResponseInterface;
+use Hyperf\Utils\Context;
 use Hyperf\Utils\Str;
 use Qbhy\HyperfAuth\AuthMiddleware;
 
@@ -57,6 +58,8 @@ class UploadController extends BaseController
                 ]
             );
         });
+
+        saveSysOperationLog('图片管理', '上传图片', '上传了图片，图片链接: ' . $access_path);
 
         return $response->json(['url' => $access_path]);
     }
