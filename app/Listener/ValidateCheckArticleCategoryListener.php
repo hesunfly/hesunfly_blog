@@ -16,6 +16,11 @@ use Hyperf\Event\Contract\ListenerInterface;
 use Hyperf\Validation\Contract\ValidatorFactoryInterface;
 use Hyperf\Validation\Event\ValidatorFactoryResolved;
 
+/**
+ * function:自定义验证规则
+ * Class ValidateCheckArticleCategoryListener
+ * @package App\Listener
+ */
 class ValidateCheckArticleCategoryListener implements ListenerInterface
 {
     public function listen(): array

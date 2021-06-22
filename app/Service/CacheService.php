@@ -4,14 +4,10 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-//use App\Models\Ad;
 use App\Model\Ad;
 use App\Model\Config;
 use App\Model\Page;
 use Hyperf\Cache\Cache;
-use Hyperf\Di\Annotation\Inject;
-
-//use App\Models\Setting;
 
 class CacheService extends Service
 {
