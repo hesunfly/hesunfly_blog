@@ -165,7 +165,6 @@ class ArticleController extends BaseController
             );
         }
 
-        var_dump($article->id);
         Context::set('source_id', $article->id);
         saveSysOperationLog('文章模块', '创建文章', '创建了新文章，文章标题: ' . $params['title']);
 

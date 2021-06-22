@@ -19,15 +19,16 @@ use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
 use Hyperf\HttpServer\Annotation\PostMapping;
 use Hyperf\HttpServer\Contract\ResponseInterface;
-use Hyperf\Utils\Context;
 use Hyperf\Utils\Str;
 use Qbhy\HyperfAuth\AuthMiddleware;
+use App\Middleware\AssignAuthInfoMiddleware;
 
 use function Hyperf\ViewEngine\view;
 
 /**
  * @Controller(prefix="admin/upload")
  * @Middleware(AuthMiddleware::class)
+ * @Middleware(AssignAuthInfoMiddleware::class)
  * Class UploadController
  */
 class UploadController extends BaseController

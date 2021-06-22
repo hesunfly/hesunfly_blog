@@ -25,12 +25,14 @@ use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 use Hyperf\Utils\Context;
 use Qbhy\HyperfAuth\AuthMiddleware;
+use App\Middleware\AssignAuthInfoMiddleware;
 
 use function Hyperf\ViewEngine\view;
 
 /**
  * @Controller(prefix="admin/category")
  * @Middleware(AuthMiddleware::class)
+ * @Middleware(AssignAuthInfoMiddleware::class)
  * Class IndexController
  */
 class CategoryController extends BaseController

@@ -12,11 +12,9 @@ declare(strict_types=1);
 namespace App\Controller\Web\Admin;
 
 use App\Exception\ValidateException;
-use App\Model\Article;
 use App\Model\Page;
 use App\Request\PageRequest;
 use App\Service\CacheService;
-use Carbon\Carbon;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\DeleteMapping;
 use Hyperf\HttpServer\Annotation\GetMapping;
@@ -25,14 +23,15 @@ use Hyperf\HttpServer\Annotation\PostMapping;
 use Hyperf\HttpServer\Annotation\PutMapping;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
-use Hyperf\Utils\Str;
 use Qbhy\HyperfAuth\AuthMiddleware;
+use App\Middleware\AssignAuthInfoMiddleware;
 
 use function Hyperf\ViewEngine\view;
 
 /**
  * @Controller(prefix="admin/page")
  * @Middleware(AuthMiddleware::class)
+ * @Middleware(AssignAuthInfoMiddleware::class)
  * Class IndexController
  */
 class PageController extends BaseController

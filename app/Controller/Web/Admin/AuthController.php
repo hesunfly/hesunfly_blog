@@ -24,11 +24,14 @@ use Hyperf\HttpServer\Contract\ResponseInterface;
 use Hyperf\Utils\Context;
 use HyperfExt\Hashing\Hash;
 use Qbhy\HyperfAuth\Annotation\Auth;
+use App\Middleware\AssignAuthInfoMiddleware;
+use Hyperf\HttpServer\Annotation\Middleware;
 
 use function Hyperf\ViewEngine\view;
 
 /**
  * @Controller(prefix="auth")
+ * @Middleware(AssignAuthInfoMiddleware::class)
  * Class AuthController
  */
 class AuthController extends BaseController
