@@ -2,10 +2,8 @@
 
 namespace App\Exception\Handler;
 
-use App\Exception\DbQueryException;
 use Hyperf\Database\Model\ModelNotFoundException;
 use Hyperf\ExceptionHandler\ExceptionHandler;
-use Hyperf\Utils\ApplicationContext;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 

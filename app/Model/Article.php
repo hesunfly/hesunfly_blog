@@ -5,25 +5,30 @@ namespace App\Model;
 
 use Hyperf\Database\Model\SoftDeletes;
 use Hyperf\DbConnection\Model\Model;
+use Hyperf\Scout\Searchable;
+
 /**
- * @property int $id 
- * @property int $category_id 
- * @property string $title 
- * @property string $description 
- * @property string $slug 
- * @property string $html_content 
- * @property string $content 
- * @property int $status 
- * @property int $view_count 
- * @property string $qr_path 
- * @property string $publish_at 
- * @property \Carbon\Carbon $created_at 
- * @property \Carbon\Carbon $updated_at 
- * @property string $deleted_at 
+ * @property int $id
+ * @property int $category_id
+ * @property string $title
+ * @property string $description
+ * @property string $slug
+ * @property string $html_content
+ * @property string $content
+ * @property int $status
+ * @property int $view_count
+ * @property string $qr_path
+ * @property string $publish_at
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property string $deleted_at
  */
 class Article extends Model
 {
     use SoftDeletes;
+
+    use Searchable;
+
     /**
      * The table associated with the model.
      *
@@ -41,7 +46,14 @@ class Article extends Model
      *
      * @var array
      */
-    protected $casts = ['id' => 'integer', 'category_id' => 'integer', 'status' => 'integer', 'view_count' => 'integer', 'created_at' => 'datetime', 'updated_at' => 'datetime'];
+    protected $casts = [
+        'id' => 'integer',
+        'category_id' => 'integer',
+        'status' => 'integer',
+        'view_count' => 'integer',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
 
     public function category()
     {
@@ -51,5 +63,25 @@ class Article extends Model
     public function getPublishAtAttribute($value)
     {
         return $value ? mb_substr($value, 0, 16) : '';
+    }
+
+    public function searchableAs(): string
+    {
+        return 'article';
+    }
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'title' => $this->title,
+            'content' => $this->content,
+            'category' => Category::query()->where('id', $this->category_id)->value('title'),
+        ];
+    }
+
+    //只有发布的文章可以进行检索
+    public function shouldBeSearchable()
+    {
+        return $this->status == 1;
     }
 }

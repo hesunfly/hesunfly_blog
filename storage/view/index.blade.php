@@ -31,9 +31,9 @@
     @endforeach
     <div class="uppercase flex items-center justify-center flex-1 font-sans" style="padding-bottom: 1rem;">
         @if ($articles->currentPage() != 1)
-            <a href="{{ $articles->previousPageUrl() }}" rel="next"
+            <a href="{{ $articles->previousPageUrl() . '&keyword=' . $keyword }}" rel="next"
                class="block no-underline text-light hover:text-black px-5">上一页</a>
-            <a href="{{ $articles->previousPageUrl() }}" rel="next"
+            <a href="{{ $articles->previousPageUrl() . '&keyword=' . $keyword }}" rel="next"
                class="block no-underline text-light hover:text-black px-5">{{ $articles->currentPage() - 1 }}</a>
         @else
             <a href="javascript:;" rel="next"
@@ -41,9 +41,9 @@
         @endif
             <span class="px-5">{{ $articles->currentPage() }}</span>
         @if ($articles->lastPage() != $articles->currentPage())
-                <a href="{{ $articles->nextPageUrl() }}" rel="next"
+                <a href="{{ $articles->nextPageUrl() . '&keyword=' . $keyword }}" rel="next"
                    class="block no-underline text-light hover:text-black px-5">{{ $articles->currentPage() + 1 }}</a>
-            <a href="{{ $articles->nextPageUrl() }}" rel="next"
+            <a href="{{ $articles->nextPageUrl() . '&keyword=' . $keyword }}" rel="next"
                class="block no-underline text-light hover:text-black px-5">下一页</a>
         @else
             <a href="javascript:;" rel="next"

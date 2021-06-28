@@ -63,17 +63,43 @@ class IndexController extends AbstractController
     public function index(RequestInterface $request, RenderInterface $render)
     {
         $keyword = $request->input('keyword');
+        $page_size = (int)make(CacheService::class)->getConfig('page_size');
+        $ids = [];
+        if ($keyword && env('ES_ENABLE')) {
+            $results = Article::search($keyword)
+                ->orderBy('id', 'desc')
+                ->paginateRaw($page_size);
+            $total = $results['hits']['total']['value'];
+
+            if ($total == 0) {
+                return $render->render(
+                    'index',
+                    [
+                        'articles' => [],
+                        'keyword' => $keyword,
+                    ]
+                );
+            }
+            $ids = array_column($results['hits']['hits'], '_id');
+            unset($keyword);
+        }
         $articles = Article::query()
             ->with('category')
             ->where('status', 1)
             ->when(
-                $keyword,
-                function ($query, $keyword) {
-                    $query->where('title', 'like', "%{$keyword}%");
+                $ids,
+                function ($query, $ids) {
+                    $query->whereIn('id', $ids);
                 }
             )
-            ->orderByDesc('publish_at')
-            ->paginate((int)make(CacheService::class)->getConfig('page_size'));
+            ->when(
+                $keyword,
+                function ($query, $keyword) {
+                    $query->where('title', 'like', "%{$keyword}%")->orWhere('content', 'like', "%{$keyword}%");
+                }
+            )
+            ->orderByDesc('id')
+            ->paginate($page_size);
 
         return $render->render(
             'index',

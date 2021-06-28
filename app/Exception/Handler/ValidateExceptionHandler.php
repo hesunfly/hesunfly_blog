@@ -2,7 +2,6 @@
 
 namespace App\Exception\Handler;
 
-use App\Exception\DbSaveException;
 use App\Exception\ValidateException;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\Utils\ApplicationContext;
