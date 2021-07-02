@@ -69,8 +69,8 @@ function saveSysOperationLog($module, $action, $opt_info)
     $request = ApplicationContext::getContainer()->get(\Hyperf\HttpServer\Request::class);
     \Hyperf\DbConnection\Db::table('operation_log')->insert(
         [
-            'user_id' => Context::get('uid') ?? 0,
-            'user_name' => Context::get('user_name') ?? '',
+            'user_id' => Context::get('uid') ?: 0,
+            'user_name' => Context::get('user_name') ?: '',
             'ip_address' => get_client_ip(),
             'request_info' => json_encode(
                 [
@@ -83,7 +83,7 @@ function saveSysOperationLog($module, $action, $opt_info)
             'operation_time' => date('Y-m-d H:i:s', $request->getServerParams()['request_time']),
             'operation_action' => $action,
             'operation_system' => $request->getHeaderLine('user-agent'),
-            'source_id' => Context::get('source_id') ?? 0,
+            'source_id' => Context::get('source_id') ?: 0,
             'operation_info' => $opt_info,
         ]
     );
