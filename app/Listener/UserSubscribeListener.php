@@ -42,6 +42,7 @@ class UserSubscribeListener implements ListenerInterface
             'key' => $key,
         ];
 
+        EmailConfirmCode::query()->where('email', $email)->delete();
         EmailConfirmCode::create($data);
 
         $view = make(RenderInterface::class)->getContents('emails.subscribe_confirm', ['data' => $data]);

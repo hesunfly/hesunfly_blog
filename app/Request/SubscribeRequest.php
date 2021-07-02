@@ -34,7 +34,6 @@ class SubscribeRequest extends FormRequest
                         'bail',
                         'required',
                         'email',
-                        'unique:subscribe,email'
                     ]
                 ];
             case 'GET':

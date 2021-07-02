@@ -51,6 +51,7 @@ class Article extends Model
         'category_id' => 'integer',
         'status' => 'integer',
         'view_count' => 'integer',
+        'publish_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
@@ -73,6 +74,7 @@ class Article extends Model
     public function toSearchableArray(): array
     {
         return [
+            'publish_at' => $this->publish_at,
             'title' => $this->title,
             'content' => $this->content,
             'category' => Category::query()->where('id', $this->category_id)->value('title'),
