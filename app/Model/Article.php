@@ -27,7 +27,7 @@ class Article extends Model
 {
     use SoftDeletes;
 
-    use Searchable;
+//    use Searchable;
 
     /**
      * The table associated with the model.
