@@ -14,7 +14,7 @@ namespace App\Exception\Handler;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\Utils\ApplicationContext;
 use Psr\Http\Message\ResponseInterface;
-use Qbhy\HyperfAuth\Exception\UnauthorizedException;
+use Qbhy\HyperfAuth\Exception\AuthException;
 use Throwable;
 
 class AuthExceptionHandler extends ExceptionHandler
@@ -27,7 +27,7 @@ class AuthExceptionHandler extends ExceptionHandler
 
     public function isValid(Throwable $throwable): bool
     {
-        return $throwable instanceof UnauthorizedException;
+        return $throwable instanceof AuthException;
     }
 
     private function response(): \Hyperf\HttpServer\Contract\ResponseInterface
