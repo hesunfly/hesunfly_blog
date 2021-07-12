@@ -19,8 +19,8 @@ return [
             \App\Exception\Handler\ModelNotFoundExceptionHandler::class,
             \Hyperf\ExceptionHandler\Handler\WhoopsExceptionHandler::class,
             \Hyperf\ExceptionHandler\Listener\ErrorExceptionHandler::class,
-            App\Exception\Handler\AppExceptionHandler::class,
             Hyperf\HttpServer\Exception\Handler\HttpExceptionHandler::class,
+            App\Exception\Handler\AppExceptionHandler::class,
         ],
     ],
 ];
